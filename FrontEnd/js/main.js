@@ -1,8 +1,12 @@
+let worksData;
+let categoriesData;
+
 function getWorks(){
     fetch('http://localhost:5678/api/works').then(function (response) {
         return response.json();
 
     }).then(function (data) {
+        worksData = data;
         dispatchWorks(data);
 
     }).catch(function (err) {
@@ -15,6 +19,7 @@ function getCategories(){
         return response.json();
 
     }).then(function (data) {
+        categoriesData = data;
         createFilters(data);
 
     }).catch(function (err) {
@@ -22,10 +27,23 @@ function getCategories(){
     });
 }
 
-function dispatchWorks(data){
-    let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
+
+function dispatchWorks(data, idCategory){
+    
+    let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0]
+    gallery.innerHTML = "";
+
+
+    if(idCategory && idCategory != 4){
+        data = data.filter((work)=> work.categoryId == idCategory);
+        
+    }else if(!idCategory || idCategory == 4){
+        console.log(data,"test");
+    }
+
 
     data.forEach(item => {
+
         let work = document.createElement('figure');
         let workImage = document.createElement('img');
         let workText = document.createElement('figcaption');
@@ -57,9 +75,11 @@ function createFilters(data){
     let filtersContainer = document.getElementById('filters-container');
 
     let allFilters = new Set();
-    allFilters.add("Tous");
+    let tousFilter = { id : 4, name: "Tous"};
+    allFilters.add(tousFilter);
+
     for( i = 0 ; i < data.length ; i++ ){
-        allFilters.add(data[i].name);
+        allFilters.add(data[i]);
     }
 
     allFilters.forEach(item => {
@@ -82,10 +102,14 @@ function createFilters(data){
             filter.style.color = '#1D6154';
             filter.style.backgroundColor = 'white';
         });
-        
-        item == "Hotels & restaurants" ? item = "Hôtels & restaurants" : item;
 
-        filter.innerHTML = item;
+        filter.addEventListener("click", (event) => {
+            dispatchWorks(worksData, item.id);
+        });
+        
+        item.name == "Hotels & restaurants" ? item.name = "Hôtels & restaurants" : item;
+
+        filter.innerHTML = item.name;
         filtersContainer.append(filter);
     });   
 
