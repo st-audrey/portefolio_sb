@@ -83,6 +83,8 @@ function createFilters(data){
             filter.style.backgroundColor = 'white';
         });
         
+        item == "Hotels & restaurants" ? item = "Hôtels & restaurants" : item;
+
         filter.innerHTML = item;
         filtersContainer.append(filter);
     });   
