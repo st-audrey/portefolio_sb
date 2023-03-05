@@ -1,3 +1,35 @@
+function checkLoggedIn(){
+    let token = localStorage.getItem("token");
+    let logged;
+    if(token){
+        logged = true
+    }else{
+        logged = false;
+        redirectLogout();
+    } 
+    return logged;
+}
+
+function checkAuthorized(){
+    let user = localStorage.getItem("user");
+    let authorized;
+    if(user == 1){
+        authorized = true;
+        allowEditionMode();
+    }else{
+        authorized = false;
+    } 
+    return authorized;
+}
+
+function redirectLogout(){
+    window.location.href="/login.html";
+}
+
+function allowEditionMode(){
+    //display edition bar
+}
+
 let worksData;
 let categoriesData;
 
@@ -115,6 +147,7 @@ function createFilters(data){
 
 }
 
-
+checkLoggedIn();
+checkAuthorized();
 getWorks();
 getCategories();

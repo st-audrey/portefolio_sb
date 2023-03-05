@@ -1,11 +1,11 @@
 async function logUser(e){
-    e.preventDefault();
+  e.preventDefault();
 
-    let error = document.getElementById("error");
-    let user = {
-        email : document.getElementById("email").value,
-        password : document.getElementById("password").value
-    }
+  let error = document.getElementById("error");
+  let user = {
+      email : document.getElementById("email").value,
+      password : document.getElementById("password").value
+  }
   
   let response = await fetch('http://localhost:5678/api/users/login', {
     method: 'POST',
@@ -24,7 +24,7 @@ async function logUser(e){
     window.location.href="/index.html";
 
   }else if(result.message){
-    error.innerHTML = "Erreur dans l’identifiant ou le mot de passe"
+    error.innerHTML = "Erreur dans l\'identifiant ou le mot de passe"
   }
 }
 
