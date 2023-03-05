@@ -14,7 +14,7 @@
 <body>
 <header>
 
-	<div id="edition-bar">
+	<div id="edition-bar" class="edition-mode">
 		<p><i class="fa-solid fa-pen-to-square"></i>Mode édition</p>
 		<button id="edition-complete">publier les changements</button>
 	</div>
@@ -25,7 +25,7 @@
 			<ul>
 				<li>projets</li>
 				<li>contact</li>
-				<li>login</li>
+				<li onclick="logout()">logout</li>
 				<li><img class="insta-ico" src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
 		</nav>
@@ -36,10 +36,11 @@
 <main>
 	<section id="introduction">
 		<figure>
-			<img src="./assets/images/sophie-bluel.png" alt="">
-			<figcaption id="editon-mode-img"><p><i class="fa-solid fa-pen-to-square"></i>Modifier</p></figcaption>
+			<img class="sb-img" src="./assets/images/sophie-bluel.png" alt="Portrait de Sophie Bluel">
+			<figcaption class="edition-mode" id="editon-mode-img"><p><i class="fa-solid fa-pen-to-square"></i>Modifier</p></figcaption>
 		</figure>
 		<article>
+			<p class="edition-mode edition-portrait"><i class="fa-solid fa-pen-to-square"></i>Modifier</p>
 			<h2>Designer d'espace</h2>
 			<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
 			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
@@ -49,7 +50,7 @@
 	<section id="portfolio">
 		<div id="edition-mode-project">
 			<h2>Mes Projets</h2>
-			<p><i class="fa-solid fa-pen-to-square"></i>Modifier</p>
+			<p class="edition-mode"><i class="fa-solid fa-pen-to-square"></i>Modifier</p>
 		</div>
 		
 		<div class="gallery"></div>

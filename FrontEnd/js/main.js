@@ -11,13 +11,16 @@ function checkLoggedIn(){
 }
 
 function checkAuthorized(){
-    let user = localStorage.getItem("user");
+    let user = localStorage.getItem("user_id");
     let authorized;
     if(user == 1){
         authorized = true;
-        allowEditionMode();
+        getWorks();
     }else{
         authorized = false;
+        editionModeDisabled();
+        getWorks();
+        getCategories();
     } 
     return authorized;
 }
@@ -27,8 +30,13 @@ function logout(){
     window.location.href="/login.html";
 }
 
-function allowEditionMode(){
-    //display edition bar
+function editionModeDisabled(){
+    let editionElems = document.getElementsByClassName("edition-mode");
+    console.log("editionElems", editionElems);
+
+    for(let i = 0; i < editionElems.length; i++){
+        editionElems[i].classList.add("disabled");
+    }
 }
 
 let worksData;
@@ -150,5 +158,5 @@ function createFilters(data){
 
 checkLoggedIn();
 checkAuthorized();
-getWorks();
-getCategories();
+    
+

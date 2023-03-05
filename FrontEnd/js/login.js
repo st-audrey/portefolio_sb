@@ -21,6 +21,7 @@ async function logUser(e){
 
     localStorage.setItem("token", result.token);
     localStorage.setItem("user_id", result.userId);
+    
     window.location.href="/index.html";
 
   }else if(result.message){
