@@ -55,9 +55,72 @@ body {
 }
 header {
 	display: flex;
-	justify-content: space-between;
-	margin: 50px 0
+	flex-direction: column;
+	justify-content: center;
 }
+
+#edition-bar{
+	display: flex;
+	justify-content: center;
+	height: 30px;
+	background-color: black;
+	color: white;
+	padding: 10px 0 11px 0;
+	align-items: center;
+}
+
+#edition-bar > p{
+	font-size: 16px;
+	line-height: 19px;
+}
+
+.fa-pen-to-square{
+	margin-right: 10px;
+	font-weight: 100;
+}
+
+#edition-complete{
+	width: 216px;
+	height: 38px;
+	margin-left: 20px;
+	border-radius: 40px;
+	border: none;
+	background-color: white;
+	color: black;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 16px;
+	font-family: 'Work Sans';
+	cursor: pointer;
+}
+
+#editon-mode-img{
+	margin: 13px 0 0 57px;
+	cursor: pointer;
+}
+
+#edition-mode-project{
+	margin-top: 130px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: baseline;
+}
+
+#edition-mode-project > p > .fa-pen-to-square{
+	margin-left: 30px;
+}
+
+#edition-mode-project > p {
+	cursor: pointer;
+}
+
+.nav-bar{
+	display: flex;
+	justify-content: space-between;
+}
+
 section {
 	margin: 50px 0
 }
@@ -93,6 +156,11 @@ nav ul {
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
+}
+
+.insta-ico{
+    width: 20px;
+    height: 20px;
 }
 
 li:hover {

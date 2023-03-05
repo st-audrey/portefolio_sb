@@ -63,7 +63,7 @@ function getCategories(){
 
 function dispatchWorks(data, idCategory){
     
-    let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0]
+    let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
     gallery.innerHTML = "";
 
 
