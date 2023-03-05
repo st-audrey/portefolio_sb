@@ -5,7 +5,7 @@ function checkLoggedIn(){
         logged = true
     }else{
         logged = false;
-        redirectLogout();
+        logout();
     } 
     return logged;
 }
@@ -22,7 +22,8 @@ function checkAuthorized(){
     return authorized;
 }
 
-function redirectLogout(){
+function logout(){
+    localStorage.clear();
     window.location.href="/login.html";
 }
 
