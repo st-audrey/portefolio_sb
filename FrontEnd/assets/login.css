@@ -86,7 +86,7 @@ h1{
     font-family: 'Syne';
 }
 
-.form-login{
+#form-login{
     display: flex;
     flex-direction: column;
 }
@@ -113,7 +113,7 @@ input:focus{
 }
 
 .form-btn{
-    margin: 35px auto;
+    margin: 0 auto;
     border-radius: 40px;
     background-color: #1D6154;
     color: white;
@@ -131,7 +131,19 @@ input:focus{
     background-color: #0E2F28;
 }
 
+.error-container{
+    height: 47px;
+    display: flex;
+    justify-content: center;
+}
+
+#error{
+    color: rgb(94, 29, 29);
+}
+
+
 .pwd-reset{
+    margin-top: 27px;
     font-family: 'Work Sans';
     font-style: normal;
     font-weight: 500;
@@ -151,3 +163,4 @@ input:focus{
     justify-content: flex-end;
     color: black;
 }
+

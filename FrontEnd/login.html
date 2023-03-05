@@ -30,20 +30,23 @@
             </ul>
         </nav>
     </header>
-    
+
     <main>
         <section class="sec-login">
 
             <h1>Log In</h1>
     
-            <form class="form-login" action="#" method="#">
+            <form id="form-login" action="#" method="POST">
     
                 <label for="email">E-mail</label>
-                <input type="email" id="email" name="email">
+                <input type="email" id="email" name="email" required>
                 <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password">
+                <input type="password" id="password" name="password" required>
+                <div class="error-container">
+                    <p id="error"></p>
+                </div>
                 <button class="form-btn" type="submit">Se connecter</button>
-         
+                
             </form>
     
             <a href="#" class="pwd-reset">Mot de passe oublié</a>
@@ -54,5 +57,8 @@
     <footer class="footer">
         <p>Mentions légales</p>
     </footer>
+
+    
+<script type="text/javascript" src="js/login.js"></script>
 </body>
 </html>
