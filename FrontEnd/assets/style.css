@@ -145,7 +145,7 @@ section {
 	align-items: center;
 	justify-content: center;
 	top: 50px;
-	width: 1140px;;
+	width: 1140px;
 	height: 100%;
 	background: rgba(0, 0, 0, 0.3);
 	margin: 0 auto;
@@ -159,7 +159,6 @@ section {
 	max-height: calc(100vh -20px);
 	border-radius: 10px;
 	overflow: auto;
-
 }
 
 h1{

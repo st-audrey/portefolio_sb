@@ -161,10 +161,25 @@ const focusableSelector = 'button, a, input';
 let focusables = [];
 let previouslyFocusedElement = null;
 
+function disableScroll() {
+    // Get the current page scroll position
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+
+        // if any scroll is attempted, set this to the previous value
+        window.onscroll = function() {
+            window.scrollTo(scrollLeft, scrollTop);
+        };
+}
+
+function enableScroll() {
+    window.onscroll = function() {};
+}
 const openModal = function (e) {
     e.preventDefault();
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    disableScroll();
     modal = document.querySelector(e.target.getAttribute('href'));
     focusables = Array.from(modal.querySelectorAll(focusableSelector));
     previouslyFocusedElement = document.querySelector(':focus');
@@ -182,6 +197,7 @@ const closeModal = function (e){
     e.preventDefault();
     if (previouslyFocusedElement !== null) previouslyFocusedElement.focus();
     modal.style.display = 'none';
+    enableScroll();
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
     modal.removeEventListener('click', closeModal);
