@@ -50,7 +50,14 @@
 	<section id="portfolio">
 		<div id="edition-mode-project">
 			<h2>Mes Projets</h2>
-			<p class="edition-mode"><i class="fa-solid fa-pen-to-square"></i>Modifier</p>
+			<a href="#edition-modal-project" class="edition-mode edition-modal"><i class="fa-solid fa-pen-to-square"></i>Modifier</a>
+		</div>
+
+		<div id="edition-modal-project" class="modal" aria-hidden="true" role="dialog" aria-modal="false" aria-labelledby="modal-title" style="display: none;">
+			<div class="modal-wrapper edition-modal-stop">
+				<button class="edition-close-modal-btn">Fermer la modale</button>
+				<h3 class="modal-title">Galerie photo</h3>
+			</div>
 		</div>
 		
 		<div class="gallery"></div>

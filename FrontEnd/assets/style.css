@@ -112,12 +112,14 @@ header {
 	align-items: baseline;
 }
 
-#edition-mode-project > p > .fa-pen-to-square{
+#edition-mode-project > a > .fa-pen-to-square{
 	margin-left: 30px;
 }
 
-#edition-mode-project > p {
+#edition-mode-project > a {
+	color: black;
 	cursor: pointer;
+	text-decoration: none;
 }
 
 .disabled{
@@ -135,6 +137,29 @@ section {
 
 .sb-img{
 	margin: 0!important;
+}
+
+.modal{
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 50px;
+	width: 1140px;;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.3);
+	margin: 0 auto;
+}
+
+.modal-wrapper{
+	background-color: white;
+	height: 731px;
+	width: 630px;
+	max-width: calc(100vw -20px);
+	max-height: calc(100vh -20px);
+	border-radius: 10px;
+	overflow: auto;
+
 }
 
 h1{
