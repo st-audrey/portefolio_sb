@@ -1,11 +1,24 @@
+function login(){
+    //window.location.href="login.html";
+    document.getElementById("login-out-btn").style.fontWeight = 600;
+}
+
+function logout(){
+    localStorage.clear();
+    window.location.href="/login.html";
+}
+
 function checkLoggedIn(){
+
     let token = localStorage.getItem("token");
     let logged;
     if(token){
-        logged = true
+        logged = true;
+        document.getElementById('navbar').style.marginTop = "100px"
+
     }else{
         logged = false;
-        logout();
+        //logout();
     } 
     return logged;
 }
@@ -25,14 +38,9 @@ function checkAuthorized(){
     return authorized;
 }
 
-function logout(){
-    localStorage.clear();
-    window.location.href="/login.html";
-}
-
 function editionModeDisabled(){
     let editionElems = document.getElementsByClassName("edition-mode");
-    console.log("editionElems", editionElems);
+    //console.log("editionElems", editionElems);
 
     for(let i = 0; i < editionElems.length; i++){
         editionElems[i].classList.add("disabled");
@@ -48,7 +56,7 @@ function getWorks(){
 
     }).then(function (data) {
         worksData = data;
-        dispatchWorks(data);
+        dispatchWorks(data, "toGallery");
 
     }).catch(function (err) {
         console.warn('Something went wrong with works', err);
@@ -68,34 +76,52 @@ function getCategories(){
     });
 }
 
-
-function dispatchWorks(data, idCategory){
+function dispatchWorks(data, workDestination, idCategory){
+    if(workDestination == "toGallery"){
+        let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
+        gallery.innerHTML = "";
     
-    let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
-    gallery.innerHTML = "";
-
-
-    if(idCategory && idCategory != 4){
-        data = data.filter((work)=> work.categoryId == idCategory);
+    
+        if(idCategory && idCategory != 4){
+            data = data.filter((work)=> work.categoryId == idCategory);
+            
+        }else if(!idCategory || idCategory == 4){
+            console.log(data,"test");
+        }
+    
+        data.forEach(item => {
+    
+            let work = document.createElement('figure');
+            let workImage = document.createElement('img');
+            let workText = document.createElement('figcaption');
         
-    }else if(!idCategory || idCategory == 4){
-        console.log(data,"test");
-    }
-
-
-    data.forEach(item => {
-
-        let work = document.createElement('figure');
-        let workImage = document.createElement('img');
-        let workText = document.createElement('figcaption');
+            workImage.setAttribute('src', item.imageUrl);
+            workText.innerHTML += item.title;
     
-        workImage.setAttribute('src', item.imageUrl);
-        workText.innerHTML += item.title;
+            work.append(workImage, workText);
+    
+            gallery.appendChild(work);
+        });
 
-        work.append(workImage, workText);
+    } else {
 
-        gallery.appendChild(work);
-    });
+        let workContainer = document.getElementById("modal-photo-container");
+
+        data.forEach(item => {
+    
+            let work = document.createElement('div');
+            let workImage = document.createElement('img');
+            let workText = document.createElement('a');
+        
+            workImage.setAttribute('src', item.imageUrl);
+            workText.innerHTML = "éditer";
+    
+            work.append(workImage, workText);
+    
+            workContainer.appendChild(work);
+        });
+    }
+   
 }
 
 function createFilters(data){
@@ -103,7 +129,7 @@ function createFilters(data){
     let portfolio = document.getElementById('portfolio');
     let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
     let newContainer = document.createElement('div');  
-    newContainer.style.width = '50%';
+    newContainer.style.width = '65%';
     newContainer.style.margin = '50px auto 50px';
     newContainer.style.display = 'flex';
     newContainer.style.flexDirection = 'row';
@@ -126,7 +152,7 @@ function createFilters(data){
     allFilters.forEach(item => {
         let filter = document.createElement('button');
         filter.style.border = '1px solid #1D6154';
-        filter.style.backgroundColor = 'white';
+        filter.style.backgroundColor = '#FFFEF8';
         filter.style.padding = '5px 17px 5px 17px';
         filter.style.borderRadius = '40px';
         filter.style.fontFamily = 'Syne';
@@ -141,11 +167,11 @@ function createFilters(data){
         
         filter.addEventListener("mouseout", (event) => {
             filter.style.color = '#1D6154';
-            filter.style.backgroundColor = 'white';
+            filter.style.backgroundColor = '#FFFEF8';
         });
 
         filter.addEventListener("click", (event) => {
-            dispatchWorks(worksData, item.id);
+            dispatchWorks(worksData, "toGallery", item.id);
         });
         
         item.name == "Hotels & restaurants" ? item.name = "Hôtels & restaurants" : item;
@@ -161,26 +187,33 @@ const focusableSelector = 'button, a, input';
 let focusables = [];
 let previouslyFocusedElement = null;
 
-function disableScroll() {
-    // Get the current page scroll position
-    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+// function disableScroll() {
+//     // Get the current page scroll position
+//     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+//     scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
 
-        // if any scroll is attempted, set this to the previous value
-        window.onscroll = function() {
-            window.scrollTo(scrollLeft, scrollTop);
-        };
-}
+//         // if any scroll is attempted, set this to the previous value
+//         window.onscroll = function() {
+//             window.scrollTo(scrollLeft, scrollTop);
+//         };
+// }
 
-function enableScroll() {
-    window.onscroll = function() {};
-}
-const openModal = function (e) {
+// function enableScroll() {
+//     window.onscroll = function() {};
+// }
+
+const openModal = async function (e) {
     e.preventDefault();
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    disableScroll();
-    modal = document.querySelector(e.target.getAttribute('href'));
+    // document.body.scrollTop = 0; // For Safari
+    // document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    //disableScroll();
+    const target = e.target.getAttribute('href');
+    if (target.startsWith("#")){
+        modal = document.querySelector(target);
+    } else {
+        modal = await loadModal(target);
+    }
+    
     focusables = Array.from(modal.querySelectorAll(focusableSelector));
     previouslyFocusedElement = document.querySelector(':focus');
     focusables[0].focus();
@@ -188,8 +221,9 @@ const openModal = function (e) {
     modal.removeAttribute('aria-hidden');
     modal.setAttribute('aria-modal', 'true');
     modal.addEventListener('click', closeModal);
-    modal.querySelector('.edition-close-modal-btn').addEventListener('click', closeModal);
+    modal.querySelector('.modal-close-btn').addEventListener('click', closeModal);
     modal.querySelector('.edition-modal-stop').addEventListener('click', stopPropagation);
+    dispatchWorks(worksData, 'toModal');
 }
 
 const closeModal = function (e){
@@ -201,7 +235,7 @@ const closeModal = function (e){
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
     modal.removeEventListener('click', closeModal);
-    modal.querySelector('.edition-close-modal-btn').removeEventListener('click', closeModal);
+    modal.querySelector('.modal-close-btn').removeEventListener('click', closeModal);
     modal.querySelector('.edition-modal-stop').removeEventListener('click', stopPropagation);
     modal = null;
 }
@@ -230,6 +264,20 @@ const focusInModal = function (e){
     focusables[index].focus();
 }
 
+const loadModal = async function (url){
+    //ajax loading might need a loader
+    const target = '#' + url.split('#')[1];
+    const html = await fetch(url).then(response => response.text());
+    const element = document.createRange().createContextualFragment(html).querySelector(target);
+
+    if(element === null) throw `L'élément ${target} n'a pas été trouvé dans la page ${url}`;
+    console.log(html);
+
+    document.body.append(element);
+    return element;
+
+}
+
 document.querySelectorAll('.edition-modal').forEach(item =>{
     item.addEventListener('click', openModal);
 })
@@ -246,5 +294,4 @@ window.addEventListener('keydown', function (e) {
 
 checkLoggedIn();
 checkAuthorized();
-    
 

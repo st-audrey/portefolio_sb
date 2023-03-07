@@ -22,7 +22,7 @@ async function logUser(e){
     localStorage.setItem("token", result.token);
     localStorage.setItem("user_id", result.userId);
     
-    window.location.href="/index.html";
+    window.location.href="index.html";
 
   }else if(result.message){
     error.innerHTML = "Erreur dans l\'identifiant ou le mot de passe"
