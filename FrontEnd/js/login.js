@@ -1,6 +1,6 @@
 async function logUser(e){
   e.preventDefault();
-
+  console.log("toto")
   let error = document.getElementById("error");
   let user = {
       email : document.getElementById("email").value,
@@ -28,8 +28,6 @@ async function logUser(e){
     error.innerHTML = "Erreur dans l\'identifiant ou le mot de passe"
   }
 }
-
-document.getElementById("form-login").addEventListener("submit", logUser);
 
 
 

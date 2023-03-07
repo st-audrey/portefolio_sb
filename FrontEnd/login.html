@@ -11,54 +11,26 @@
 	<link rel="stylesheet" href="./assets/login.css">
 </head>
 <body>
-    <header class="header">
-        <div>
-            <p class="header-sb-name">Sophie Bluel</p>
-            <p class="header-sb-job">ARCHITECTE D'INTÉRIEUR</p>
-        </div>
 
-        <nav class="header-nav">
-            <ul class="nav-link-container">
-                <li class="nav-link"><a href="#">projets</a></li>
-                <li class="nav-link"><a href="#">contact</a></li>
-                <li class="nav-link"><a href="#">login</a></li>
-                <li class="nav-link">
-                    <a href="#">
-                        <img class="insta-ico" src="assets/icons/instagram.png" alt="Retrouver Sophie Bluel sur Instagram">
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    <section id="login" class="sec-login">
 
-    <main>
-        <section class="sec-login">
+        <h1 class="login-title">Log In</h1>
 
-            <h1>Log In</h1>
-    
-            <form id="form-login" action="#" method="POST">
-    
-                <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" required>
-                <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password" required>
-                <div class="error-container">
-                    <p id="error"></p>
-                </div>
-                <button class="form-btn" type="submit">Se connecter</button>
-                
-            </form>
-    
-            <a href="#" class="pwd-reset">Mot de passe oublié</a>
-    
-        </section>
-    </main>
-   
-    <footer class="footer">
-        <p>Mentions légales</p>
-    </footer>
+        <form id="form-login" method="POST" onsubmit="logUser(event)">
 
-    
-<script type="text/javascript" src="js/login.js"></script>
-</body>
+            <label for="email">E-mail</label>
+            <input type="email" id="email_login" name="email" required>
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password_login" name="password" required>
+            <div class="error-container">
+                <p id="error"></p>
+            </div>
+            <button class="form-btn" type="submit">Se connecter</button>
+            
+        </form>
+
+        <a href="#" class="pwd-reset">Mot de passe oublié</a>
+
+    </section>
+
 </html>

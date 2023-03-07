@@ -1,6 +1,40 @@
-function login(){
-    //window.location.href="login.html";
-    document.getElementById("login-out-btn").style.fontWeight = 600;
+
+  
+
+const chargeLoginSection = async function (e){
+    //document.getElementById("login-out-btn").style.fontWeight = 600;
+    e.preventDefault();
+    const target = e.target.getAttribute('href');
+    if (target.startsWith("#")){
+        modal = document.querySelector(target);
+    } else {
+        modal = await loadLoginSection(target);
+    }
+
+}
+
+//refacto les load### function
+const loadLoginSection = async function(url){
+      //ajax loading
+      const target = '#' + url.split('#')[1];
+      const html = await fetch(url).then(response => response.text());
+      const element = document.createRange().createContextualFragment(html).querySelector(target);
+  
+      if(element === null) throw `L'élément ${target} n'a pas été trouvé dans la page ${url}`;
+  
+      let main = document.getElementById("main");
+      main.innerHTML = "";
+      main.append(element);
+      return element;
+
+}
+
+const chargeMainPage = function(url){
+    if(!checkLoggedIn()){
+        //tu charges les filtres
+    }else{
+        //tu charges le mode édition
+    }
 }
 
 function logout(){
@@ -15,28 +49,31 @@ function checkLoggedIn(){
     if(token){
         logged = true;
         document.getElementById('navbar').style.marginTop = "100px"
+        getWorks();
 
     }else{
         logged = false;
-        //logout();
-    } 
-    return logged;
-}
-
-function checkAuthorized(){
-    let user = localStorage.getItem("user_id");
-    let authorized;
-    if(user == 1){
-        authorized = true;
-        getWorks();
-    }else{
-        authorized = false;
         editionModeDisabled();
         getWorks();
         getCategories();
     } 
-    return authorized;
+    return logged;
 }
+
+// function checkAuthorized(){
+//     let user = localStorage.getItem("user_id");
+//     let authorized;
+//     if(user == 1){
+//         authorized = true;
+//         getWorks();
+//     }else{
+//         authorized = false;
+//         editionModeDisabled();
+//         getWorks();
+//         getCategories();
+//     } 
+//     return authorized;
+// }
 
 function editionModeDisabled(){
     let editionElems = document.getElementsByClassName("edition-mode");
@@ -187,26 +224,9 @@ const focusableSelector = 'button, a, input';
 let focusables = [];
 let previouslyFocusedElement = null;
 
-// function disableScroll() {
-//     // Get the current page scroll position
-//     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-//     scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-
-//         // if any scroll is attempted, set this to the previous value
-//         window.onscroll = function() {
-//             window.scrollTo(scrollLeft, scrollTop);
-//         };
-// }
-
-// function enableScroll() {
-//     window.onscroll = function() {};
-// }
 
 const openModal = async function (e) {
     e.preventDefault();
-    // document.body.scrollTop = 0; // For Safari
-    // document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    //disableScroll();
     const target = e.target.getAttribute('href');
     if (target.startsWith("#")){
         modal = document.querySelector(target);
@@ -282,6 +302,8 @@ document.querySelectorAll('.edition-modal').forEach(item =>{
     item.addEventListener('click', openModal);
 })
 
+document.getElementById('login-link').addEventListener('click', chargeLoginSection);
+
 window.addEventListener('keydown', function (e) {
     if( e.key === "Escape" || e.key === "Esc"){
         closeModal(e);
@@ -293,5 +315,5 @@ window.addEventListener('keydown', function (e) {
 
 
 checkLoggedIn();
-checkAuthorized();
+// checkAuthorized();
 
