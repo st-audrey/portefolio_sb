@@ -63,20 +63,22 @@ input:focus{
     height: 47px;
     display: flex;
     justify-content: center;
+    display: flex;
+    align-items: center;
 }
 
 #error{
     color: rgb(94, 29, 29);
-} */
+}
 
-
-.pwd-reset{
+#reset-password{
     margin-top: 27px;
     font-family: 'Work Sans';
-    font-style: normal;
     font-weight: 500;
     font-size: 14px;
     color: #3D3D3D;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 

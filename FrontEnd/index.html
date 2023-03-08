@@ -9,8 +9,9 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
-	<link rel="stylesheet" href="./assets/style.css">
-	<link rel="stylesheet" href="./assets/login.css">
+	<link rel="stylesheet" href="./assets/CSS/reset.css">
+	<link rel="stylesheet" href="./assets/CSS/style.css">
+	<link rel="stylesheet" href="./assets/CSS/login.css">
 </head>
 <body>
 <header>
@@ -28,7 +29,8 @@
 			<ul>
 				<li>projets</li>
 				<li>contact</li>
-				<li><a href="login.html#login" id="login-link">login</a></li>
+				<li id="login-link-li" ><a href="login.html#login" id="login-link">login</a></li>
+				<li id="logout-link-li" class="hide"><a href="#" id="logout-link" onclick="logout()">logout</a></li>
 				<li><img class="insta-ico" src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
 		</nav>

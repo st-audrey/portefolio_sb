@@ -3,8 +3,8 @@ async function logUser(e){
   console.log("toto")
   let error = document.getElementById("error");
   let user = {
-      email : document.getElementById("email").value,
-      password : document.getElementById("password").value
+      email : document.getElementById("email_login").value,
+      password : document.getElementById("password_login").value
   }
   
   let response = await fetch('http://localhost:5678/api/users/login', {
@@ -19,10 +19,11 @@ async function logUser(e){
 
   if(result.userId){
 
-    localStorage.setItem("token", result.token);
-    localStorage.setItem("user_id", result.userId);
-    
+    localStorage.setItem("token", result.token)
+    localStorage.setItem("user_id", result.userId)
+   
     window.location.href="index.html";
+    
 
   }else if(result.message){
     error.innerHTML = "Erreur dans l\'identifiant ou le mot de passe"

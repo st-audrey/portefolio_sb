@@ -1,4 +1,4 @@
-
+//TODO : addClass (au lieu du style)
   
 
 const chargeLoginSection = async function (e){
@@ -21,7 +21,9 @@ const loadLoginSection = async function(url){
       const element = document.createRange().createContextualFragment(html).querySelector(target);
   
       if(element === null) throw `L'élément ${target} n'a pas été trouvé dans la page ${url}`;
-  
+
+      document.body.style.height = "100vh";
+      document.getElementById("login-link").style.fontWeight = "900";
       let main = document.getElementById("main");
       main.innerHTML = "";
       main.append(element);
@@ -39,7 +41,9 @@ const chargeMainPage = function(url){
 
 function logout(){
     localStorage.clear();
-    window.location.href="/login.html";
+    document.getElementById('login-link-li').classList.remove("hide");
+    document.getElementById('logout-link-li').classList.add("hide");
+    window.location.href="index.html"
 }
 
 function checkLoggedIn(){
@@ -49,31 +53,18 @@ function checkLoggedIn(){
     if(token){
         logged = true;
         document.getElementById('navbar').style.marginTop = "100px"
-        getWorks();
+        document.getElementById('logout-link-li').classList.remove("hide");
+        document.getElementById('login-link-li').classList.add("hide");
+        getWorks()
 
     }else{
         logged = false;
-        editionModeDisabled();
-        getWorks();
-        getCategories();
+        editionModeDisabled()
+        getWorks()
+        getCategories()
     } 
     return logged;
 }
-
-// function checkAuthorized(){
-//     let user = localStorage.getItem("user_id");
-//     let authorized;
-//     if(user == 1){
-//         authorized = true;
-//         getWorks();
-//     }else{
-//         authorized = false;
-//         editionModeDisabled();
-//         getWorks();
-//         getCategories();
-//     } 
-//     return authorized;
-// }
 
 function editionModeDisabled(){
     let editionElems = document.getElementsByClassName("edition-mode");
