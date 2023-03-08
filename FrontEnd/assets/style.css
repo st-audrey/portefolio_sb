@@ -31,6 +31,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 	background-color: #FFFEF8;
+	position: relative;
 }
 ol, ul {
 	list-style: none;
@@ -65,6 +66,7 @@ header {
 main{
 	max-width: 1440px;
 	margin: 0 auto;
+	padding-bottom: 7rem;
 }
 
 
@@ -260,6 +262,7 @@ h2{
 	font-size: 30px;
 	color: #1D6154
 }
+
 nav ul {
 	display: flex;
 	align-items: center;
@@ -272,13 +275,18 @@ nav li {
 	font-size: 1.2em;
 }
 
+#login-link{
+	color: black;
+	text-decoration: none;
+}
+
 .insta-ico{
     width: 20px;
     height: 20px;
 	margin-top: 3px;
 }
 
-li:hover {
+li:hover, #login-link:hover {
 	color: #B1663C;
 }
 
@@ -378,12 +386,15 @@ input[type="submit"]{
 	color: white;
 	background-color: #1D6154;
 	margin : 2em auto ;
-	width: 180px;
+	width: 180px!important;
 	text-align: center;
 	border-radius: 60px ;
 }
 
 footer{
+	position: absolute;
+    bottom: 0;
+    width: 100%;
     background-color: white;
 }
 
@@ -391,7 +402,6 @@ footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	margin: 2em 0 0 0;
 	width: 1440px;
     height: 60px;
     color: black;
