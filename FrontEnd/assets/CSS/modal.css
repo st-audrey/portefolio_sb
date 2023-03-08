@@ -1,0 +1,123 @@
+
+.modal{
+	position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    left: 0;
+    width: 100%;
+}
+
+.modal-wrapper{
+	padding: 32px 36px 32px;
+	background-color: white;
+	height: 731px;
+	width: 630px;
+	max-width: calc(100vw -20px);
+	max-height: calc(100vh -20px);
+	border-radius: 10px;
+	overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-close-btn{
+	align-self: flex-end;
+	border: none;
+	background-color: white;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.modal-title{
+	font-family: 'Work Sans';
+	font-weight: 400;
+	font-size: 26px;
+	line-height: 30px;
+	color: black;
+    align-self: center;
+    margin: 10px 0 3rem 0;
+}
+
+#modal-photo-container{
+	border-bottom: 1px solid black;
+	margin: 0 100px 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 7px;
+    padding-bottom: 67px;
+}
+
+.modal-img-project{
+    width: 80px;
+    object-fit: contain;
+}
+
+.modal-work-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.modal-icon-container{
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+
+.modal-edition-icon{
+    border-radius: 4px;
+    padding: 6px;
+    color: white;
+    background-color: black;
+    font-size: 10px;
+    cursor: pointer;
+    margin-left: 3px;
+}
+
+.modal-edition-link{
+    text-decoration: none;
+    color: black;
+    margin-top: 5px;
+}
+
+.modal-add-btn{
+	width: 237px;
+	height: 36px;
+	background: #1D6154;
+	border-radius: 60px;
+	border: none;
+	display: flex;
+	justify-content: center;
+    margin: 38px auto 23px;
+	color: white;
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 14px;
+	line-height: 17px;
+	align-items: center;
+    cursor: pointer;
+}
+
+.modal-add-btn:hover{
+    background: #0E2F28;
+}
+
+.modal-delete-gallery-btn{
+	display: flex;
+	justify-content: center;
+    margin: 0 auto;
+	color: #D65353;
+	border: none;
+	background-color: white;
+	font-family: 'Syne';
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 17px;
+    cursor: pointer;
+}

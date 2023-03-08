@@ -68,7 +68,6 @@ function checkLoggedIn(){
 
 function editionModeDisabled(){
     let editionElems = document.getElementsByClassName("edition-mode");
-    //console.log("editionElems", editionElems);
 
     for(let i = 0; i < editionElems.length; i++){
         editionElems[i].classList.add("disabled");
@@ -132,24 +131,50 @@ function dispatchWorks(data, workDestination, idCategory){
         });
 
     } else {
-
+       
         let workContainer = document.getElementById("modal-photo-container");
 
-        data.forEach(item => {
-    
-            let work = document.createElement('div');
-            let workImage = document.createElement('img');
-            let workText = document.createElement('a');
+
+        for(let i = 0; i < data.length; i++){
+
+            let work = document.createElement('div')
+            let workImage = document.createElement('img')
+            let workEditionLink = document.createElement('a')
+            let iconContainer = document.createElement('div') 
+            let deleteIcon = document.createElement('i')
         
-            workImage.setAttribute('src', item.imageUrl);
-            workText.innerHTML = "éditer";
+            work.classList.add('modal-work-container')
+
+            workImage.setAttribute('src', data[i].imageUrl)
+            workImage.classList.add('modal-img-project')
+            workImage.setAttribute('src', data[i].imageUrl)
+
+            workEditionLink.setAttribute( 'href', '#')
+            workEditionLink.classList.add('modal-edition-link')
+            workEditionLink.innerHTML = "éditer"
+
+            iconContainer.classList.add('modal-icon-container')
+
+            deleteIcon.classList.add('fa-solid')
+            deleteIcon.classList.add('fa-trash-can')
+            deleteIcon.classList.add('modal-edition-icon')
+            
+            if(i == 0){
+                let moveIcon = document.createElement('i')
     
-            work.append(workImage, workText);
+                moveIcon.classList.add('fa-solid')
+                moveIcon.classList.add('fa-arrows-up-down-left-right')
+                moveIcon.classList.add('modal-edition-icon')
+
+                iconContainer.append(moveIcon)
+            } 
+            
+            iconContainer.append(deleteIcon)
+            work.append( iconContainer, workImage, workEditionLink)
     
-            workContainer.appendChild(work);
-        });
+            workContainer.appendChild(work)
+        }         
     }
-   
 }
 
 function createFilters(data){
@@ -234,21 +259,23 @@ const openModal = async function (e) {
     modal.addEventListener('click', closeModal);
     modal.querySelector('.modal-close-btn').addEventListener('click', closeModal);
     modal.querySelector('.edition-modal-stop').addEventListener('click', stopPropagation);
+    console.log("data for modal", worksData)
     dispatchWorks(worksData, 'toModal');
 }
 
 const closeModal = function (e){
-    if ( modal === null ) return;
-    e.preventDefault();
-    if (previouslyFocusedElement !== null) previouslyFocusedElement.focus();
-    modal.style.display = 'none';
-    enableScroll();
-    modal.setAttribute('aria-hidden', 'true');
-    modal.removeAttribute('aria-modal');
+    if ( modal === null ) return
+    e.preventDefault()
+    if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
+    modal.style.display = 'none'
+    modal.setAttribute('aria-hidden', 'true')
+    modal.removeAttribute('aria-modal')
     modal.removeEventListener('click', closeModal);
-    modal.querySelector('.modal-close-btn').removeEventListener('click', closeModal);
-    modal.querySelector('.edition-modal-stop').removeEventListener('click', stopPropagation);
-    modal = null;
+    modal.querySelector('.modal-close-btn').removeEventListener('click', closeModal)
+    modal.querySelector('.edition-modal-stop').removeEventListener('click', stopPropagation)
+    let element = document.getElementById('edition-modal-project')
+    document.body.removeChild(element)
+    modal = null
 }
 
 const stopPropagation = function (e) {
@@ -282,7 +309,6 @@ const loadModal = async function (url){
     const element = document.createRange().createContextualFragment(html).querySelector(target);
 
     if(element === null) throw `L'élément ${target} n'a pas été trouvé dans la page ${url}`;
-    console.log(html);
 
     document.body.append(element);
     return element;
