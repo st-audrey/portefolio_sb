@@ -28,7 +28,6 @@ const loadLoginSection = async function(url){
       main.innerHTML = "";
       main.append(element);
       return element;
-
 }
 
 const chargeMainPage = function(url){
@@ -147,7 +146,7 @@ function dispatchWorks(data, workDestination, idCategory){
 
             workImage.setAttribute('src', data[i].imageUrl)
             workImage.classList.add('modal-img-project')
-            workImage.setAttribute('src', data[i].imageUrl)
+            workImage.setAttribute('id', "work_"+ data[i].id)
 
             workEditionLink.setAttribute( 'href', '#')
             workEditionLink.classList.add('modal-edition-link')
@@ -158,6 +157,9 @@ function dispatchWorks(data, workDestination, idCategory){
             deleteIcon.classList.add('fa-solid')
             deleteIcon.classList.add('fa-trash-can')
             deleteIcon.classList.add('modal-edition-icon')
+            deleteIcon.addEventListener('click', (event) => { 
+                preDeleteProject(data[i].id)
+            })
             
             if(i == 0){
                 let moveIcon = document.createElement('i')
@@ -201,7 +203,7 @@ function createFilters(data){
     for( i = 0 ; i < data.length ; i++ ){
         allFilters.add(data[i]);
     }
-
+//TODO : addClass (au lieu du style)
     allFilters.forEach(item => {
         let filter = document.createElement('button');
         filter.style.border = '1px solid #1D6154';
@@ -236,6 +238,7 @@ function createFilters(data){
 }
 
 let modal = null;
+//TODO : revoir les focusableSelector)
 const focusableSelector = 'button, a, input';
 let focusables = [];
 let previouslyFocusedElement = null;
@@ -259,7 +262,7 @@ const openModal = async function (e) {
     modal.addEventListener('click', closeModal);
     modal.querySelector('.modal-close-btn').addEventListener('click', closeModal);
     modal.querySelector('.edition-modal-stop').addEventListener('click', stopPropagation);
-    console.log("data for modal", worksData)
+
     dispatchWorks(worksData, 'toModal');
 }
 
@@ -267,15 +270,22 @@ const closeModal = function (e){
     if ( modal === null ) return
     e.preventDefault()
     if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
-    modal.style.display = 'none'
-    modal.setAttribute('aria-hidden', 'true')
-    modal.removeAttribute('aria-modal')
-    modal.removeEventListener('click', closeModal);
-    modal.querySelector('.modal-close-btn').removeEventListener('click', closeModal)
-    modal.querySelector('.edition-modal-stop').removeEventListener('click', stopPropagation)
+    // modal.style.display = 'none'
+    // modal.setAttribute('aria-hidden', 'true')
+    // modal.removeAttribute('aria-modal')
+    // modal.removeEventListener('click', closeModal);
+    // modal.querySelector('.modal-close-btn').removeEventListener('click', closeModal)
+    // modal.querySelector('.edition-modal-stop').removeEventListener('click', stopPropagation)
+
+    if(projectToDeleteArray.length){
+        deleteProject(projectToDeleteArray)
+    }
+
     let element = document.getElementById('edition-modal-project')
     document.body.removeChild(element)
     modal = null
+    dispatchWorks(worksData, "toGallery")
+
 }
 
 const stopPropagation = function (e) {
@@ -315,6 +325,37 @@ const loadModal = async function (url){
 
 }
 
+let projectToDeleteArray = [];
+const preDeleteProject = function (projectToDelete){
+    projectToDeleteArray.push(projectToDelete)
+    worksData = worksData.filter(work => work.id != projectToDelete)
+    imgOfPTD = document.getElementById("work_"+projectToDelete)
+    imgOfPTD.style.filter = "grayscale(1)"
+    //console.log(projectToDeleteArray)
+}
+
+async function deleteProject(arrayOfProjectsId){
+    //TODO : gérer les erreurs
+    let token = localStorage.getItem('token');
+
+    for(const project of arrayOfProjectsId){
+        let response = await fetch(`http://localhost:5678/api/works/${project}`, {
+
+            method: 'DELETE',
+            headers: new Headers({
+                'Authorization' : `Bearer ${token}`,
+                'Content-Type': 'application/json'
+                
+            })
+    });
+          
+        let result = await response.json();
+        console.log(result)
+ 
+    }
+}
+
+
 document.querySelectorAll('.edition-modal').forEach(item =>{
     item.addEventListener('click', openModal);
 })
@@ -332,5 +373,4 @@ window.addEventListener('keydown', function (e) {
 
 
 checkLoggedIn();
-// checkAuthorized();
 
