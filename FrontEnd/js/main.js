@@ -164,7 +164,7 @@ function dispatchWorks(data, workDestination, idCategory){
 
 const createFilters = function (data){
 //TODO : addClass (au lieu du style)
-console.log(data)
+//console.log(data)
     let portfolio = document.getElementById('portfolio');
     let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
     let newContainer = document.createElement('div');  
@@ -353,9 +353,14 @@ async function displayModalStep(modalStep){
             fileInput.addEventListener('change', verifySelectedPhoto)
 
             let select = document.getElementById('select-category')
+
             if(!select.firstChild){
+
                 let categories = await getCategories(); 
-            
+
+                let defaultOption = {id : 0,name : ""}
+                categories.unshift(defaultOption)
+
                 categories.forEach(data =>{
                     let option = document.createElement('option')
                     option.setAttribute('value', data.id)
@@ -363,8 +368,9 @@ async function displayModalStep(modalStep){
                     select.append(option)
                 })
 
-                select.addEventListener("change", (event) => {
-                    console.log("select",event)
+                select.addEventListener('change', (event) => {
+                    //console.log("select", select.value)
+                    prepareData(null, select.value)
                 });
             }
             break;
@@ -381,26 +387,37 @@ const verifySelectedPhoto = function (e){
     if (fileInput.files.length > 0) {
         const fileSize = fileInput.files.item(0).size //given in octets
         const fileMB = fileSize / 1024 ** 2
-        console.log(fileSize + " octets =", fileMB + " MB")
+        //console.log(fileSize + " octets =", fileMB + " MB")
 
         if (fileMB > 4) {
             // err "Please select a file less than 2MB.";
         }else{
+            
             const file = document.getElementById('modal-upload-field').files[0];
-            console.log(file)
+            prepareData(file)
             let container = document.querySelector('.modal-upload')
             container.innerHTML = ""
 
             let image = document.createElement('img')
             image.src = URL.createObjectURL(file)
             container.append(image)
+
         }
     }else{
         //err : aucun fichier sélectionné
     }
+}
 
+var formData = new FormData();
+const prepareData = function (imgFile, title, category){
 
-
+    imgFile ? formData.append("userfile", imgFile) :
+    title ? formData.append("title", title) :
+    category ? formData.append("title", category) : ""
+    
+    for (const value of formData.values()) {
+        console.log("value",value);
+      }
 }
 
 // formElem.onsubmit = async (e) => {
@@ -440,7 +457,7 @@ async function deleteProject(arrayOfProjectsId){
     });
           
         let result = await response.json();
-        console.log(result)
+        //console.log(result)
  
     }
 }
