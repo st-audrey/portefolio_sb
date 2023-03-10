@@ -20,26 +20,28 @@
             <div id="modal-photo-container"></div>
 
             <div id="modal-add-photo">
-                <div class="modal-upload-field">
-                    <i class="fa-regular fa-image"></i>
-                    <label for="modal-upload-field" class="modal-upload-field-btn">
-                        <span class="modal-upload-label-txt">+ Ajouter photo</span>
-                    </label>
-                    <p class="modal-upload-field-txt">jpg, png : 4mo max</p>
-                    <input id="modal-upload-field" type="file" name="modal-upload-field" accept="image/png, image/jpeg">
-                    <!-- <input class="modal-upload-field-btn" type="file" name="picture" accept="image/png, image/jpeg"> -->
-                    <!-- <button class="modal-upload-field-btn">+ Ajouter photo</button> -->
-                    
-                </div>
-                <form class="modal-form" action="#" method="post" enctype="multipart/form-data">
+
+                <form id="modal-form" class="modal-form" action="#" method="post" enctype="multipart/form-data" onsubmit="preAddPhoto(event)">
+
+                    <div class="modal-upload">
+                        <i class="fa-regular fa-image"></i>
+                        <label for="modal-upload-field" class="modal-upload-field-btn">
+                            <span class="modal-upload-label-txt">+ Ajouter photo</span>
+                        </label>
+                        <p class="modal-upload-field-txt">jpg, png : 4mo max</p>
+                        <input id="modal-upload-field" type="file" name="modal-upload-field" accept="image/png, image/jpeg"> 
+                    </div>
+           
                     <label for="input-title">Titre</label>
                     <input class="modal-form-input-title" type="text" id="input-title" name="title">
+
                     <label for="select-category">Catégorie</label>
                     <select class="modal-form-select-category" type="text" id="select-category" name="category"></select>
+
                 </form>
             </div>
 
-            <button type="submit" form="modal-form" class="modal-form-submit">Valider</button>
+            <button type="submit" form="modal-form" class="modal-form-submit" disabled>Valider</button>
 
             <button class="modal-add-btn">Ajouter une photo</button>
             <button class="modal-delete-gallery-btn">Supprimer la galerie</button>

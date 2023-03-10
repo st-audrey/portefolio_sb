@@ -348,6 +348,10 @@ async function displayModalStep(modalStep){
             modal.querySelector('.modal-title').innerHTML = "Ajout photo"
             modal.querySelector('.modal-add-btn').style.display = "none"
             modal.querySelector('.modal-delete-gallery-btn') ? modal.querySelector('.modal-delete-gallery-btn').style.display = "none" : ""
+
+            let fileInput = document.getElementById('modal-upload-field')
+            fileInput.addEventListener('change', verifySelectedPhoto)
+
             let select = document.getElementById('select-category')
             if(!select.firstChild){
                 let categories = await getCategories(); 
@@ -358,10 +362,59 @@ async function displayModalStep(modalStep){
                     option.innerHTML = data.name
                     select.append(option)
                 })
+
+                select.addEventListener("change", (event) => {
+                    console.log("select",event)
+                });
             }
             break;
     }
-};
+}
+
+const verifySelectedPhoto = function (e){
+    e.preventDefault;
+
+    const fileInput = document.getElementById('modal-upload-field')
+
+    //1 Mo = 1 MB
+    //1 Mo = 1024 k0 = 1 048 576 octets
+    if (fileInput.files.length > 0) {
+        const fileSize = fileInput.files.item(0).size //given in octets
+        const fileMB = fileSize / 1024 ** 2
+        console.log(fileSize + " octets =", fileMB + " MB")
+
+        if (fileMB > 4) {
+            // err "Please select a file less than 2MB.";
+        }else{
+            const file = document.getElementById('modal-upload-field').files[0];
+            console.log(file)
+            let container = document.querySelector('.modal-upload')
+            container.innerHTML = ""
+
+            let image = document.createElement('img')
+            image.src = URL.createObjectURL(file)
+            container.append(image)
+        }
+    }else{
+        //err : aucun fichier sélectionné
+    }
+
+
+
+}
+
+// formElem.onsubmit = async (e) => {
+//     e.preventDefault();
+
+//     let response = await fetch('/article/formdata/post/user-avatar', {
+//       method: 'POST',
+//       body: new FormData(formElem)
+//     });
+
+//     let result = await response.json();
+
+//     alert(result.message);
+//   };
 
 let projectToDeleteArray = [];
 const preDeleteProject = function (projectToDelete){
@@ -369,7 +422,6 @@ const preDeleteProject = function (projectToDelete){
     worksData = worksData.filter(work => work.id != projectToDelete)
     imgOfPTD = document.getElementById("work_"+projectToDelete)
     imgOfPTD.style.filter = "grayscale(1)"
-    //console.log(projectToDeleteArray)
 }
 
 async function deleteProject(arrayOfProjectsId){
@@ -391,11 +443,6 @@ async function deleteProject(arrayOfProjectsId){
         console.log(result)
  
     }
-}
-
-let projectToAdd = {};
-const preAddProject = function (){
-  
 }
 
 document.querySelectorAll('.edition-modal').forEach(item =>{
