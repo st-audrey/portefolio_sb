@@ -1,5 +1,5 @@
+let worksData;
 //TODO : addClass (au lieu du style)
-  
 
 const chargeLoginSection = async function (e){
     //document.getElementById("login-out-btn").style.fontWeight = 600;
@@ -30,14 +30,6 @@ const loadLoginSection = async function(url){
       return element;
 }
 
-const chargeMainPage = function(url){
-    if(!checkLoggedIn()){
-        //tu charges les filtres
-    }else{
-        //tu charges le mode édition
-    }
-}
-
 function logout(){
     localStorage.clear();
     document.getElementById('login-link-li').classList.remove("hide");
@@ -47,22 +39,10 @@ function logout(){
 
 function checkLoggedIn(){
 
-    let token = localStorage.getItem("token");
-    let logged;
-    if(token){
-        logged = true;
-        document.getElementById('navbar').style.marginTop = "100px"
-        document.getElementById('logout-link-li').classList.remove("hide");
-        document.getElementById('login-link-li').classList.add("hide");
-        getWorks()
-
-    }else{
-        logged = false;
-        editionModeDisabled()
-        getWorks()
-        getCategories()
-    } 
-    return logged;
+    let token = localStorage.getItem("token")
+    let logged
+    token ? logged = true : logged = false
+    return logged
 }
 
 function editionModeDisabled(){
@@ -73,10 +53,7 @@ function editionModeDisabled(){
     }
 }
 
-let worksData;
-let categoriesData;
-
-function getWorks(){
+async function getWorks(){
     fetch('http://localhost:5678/api/works').then(function (response) {
         return response.json();
 
@@ -89,18 +66,24 @@ function getWorks(){
     });
 }
 
-function getCategories(){
-    fetch('http://localhost:5678/api/categories').then(function (response) {
-        return response.json();
+async function getCategories(){
+    return fetch('http://localhost:5678/api/categories')
 
-    }).then(function (data) {
-        categoriesData = data;
-        createFilters(data);
+    .then((response)=>response.json())
+
+    .then(function (data) {
+        let loggin = checkLoggedIn()
+        if(loggin == true){
+            return data
+        }else{
+            createFilters(data)
+        }
+        
 
     }).catch(function (err) {
         console.warn('Something went wrong with categories', err);
     });
-}
+ }
 
 function dispatchWorks(data, workDestination, idCategory){
     if(workDestination == "toGallery"){
@@ -179,8 +162,9 @@ function dispatchWorks(data, workDestination, idCategory){
     }
 }
 
-function createFilters(data){
-
+const createFilters = function (data){
+//TODO : addClass (au lieu du style)
+console.log(data)
     let portfolio = document.getElementById('portfolio');
     let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
     let newContainer = document.createElement('div');  
@@ -203,7 +187,7 @@ function createFilters(data){
     for( i = 0 ; i < data.length ; i++ ){
         allFilters.add(data[i]);
     }
-//TODO : addClass (au lieu du style)
+
     allFilters.forEach(item => {
         let filter = document.createElement('button');
         filter.style.border = '1px solid #1D6154';
@@ -229,57 +213,54 @@ function createFilters(data){
             dispatchWorks(worksData, "toGallery", item.id);
         });
         
-        item.name == "Hotels & restaurants" ? item.name = "Hôtels & restaurants" : item;
+        item.name == "Hotels & restaurants" ? item.name = "Hôtels & restaurants" : item
 
-        filter.innerHTML = item.name;
-        filtersContainer.append(filter);
+        filter.innerHTML = item.name
+        filtersContainer.append(filter)
     });   
 
 }
 
 let modal = null;
-//TODO : revoir les focusableSelector)
-const focusableSelector = 'button, a, input';
-let focusables = [];
-let previouslyFocusedElement = null;
+//TODO : revoir les focusableSelector
+const focusableSelector = 'button, a, input'
+let focusables = []
+let previouslyFocusedElement = null
 
 
 const openModal = async function (e) {
-    e.preventDefault();
-    const target = e.target.getAttribute('href');
+    e.preventDefault()
+    const target = e.target.getAttribute('href')
     if (target.startsWith("#")){
-        modal = document.querySelector(target);
+        modal = document.querySelector(target)
     } else {
-        modal = await loadModal(target);
+        modal = await loadModal(target)
     }
     
-    focusables = Array.from(modal.querySelectorAll(focusableSelector));
-    previouslyFocusedElement = document.querySelector(':focus');
-    focusables[0].focus();
-    modal.style.display = null;
-    modal.removeAttribute('aria-hidden');
-    modal.setAttribute('aria-modal', 'true');
-    modal.addEventListener('click', closeModal);
-    modal.querySelector('.modal-close-btn').addEventListener('click', closeModal);
-    modal.querySelector('.edition-modal-stop').addEventListener('click', stopPropagation);
+    focusables = Array.from(modal.querySelectorAll(focusableSelector))
+    previouslyFocusedElement = document.querySelector(':focus')
+    focusables[0].focus()
+    //modal.style.display = null
+    modal.removeAttribute('aria-hidden')
+    modal.setAttribute('aria-modal', 'true')
 
-    dispatchWorks(worksData, 'toModal');
+    modal.addEventListener('click', closeModal)
+    modal.querySelector('.modal-close-btn').addEventListener('click', closeModal)
+    modal.querySelector('.edition-modal-stop').addEventListener('click', stopPropagation)
+
+    displayModalStep(1);
+
 }
 
 const closeModal = function (e){
     if ( modal === null ) return
     e.preventDefault()
     if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
-    // modal.style.display = 'none'
-    // modal.setAttribute('aria-hidden', 'true')
-    // modal.removeAttribute('aria-modal')
-    // modal.removeEventListener('click', closeModal);
-    // modal.querySelector('.modal-close-btn').removeEventListener('click', closeModal)
-    // modal.querySelector('.edition-modal-stop').removeEventListener('click', stopPropagation)
 
-    if(projectToDeleteArray.length){
-        deleteProject(projectToDeleteArray)
-    }
+    //TODO = suppression des projets au clic sur le bouton "publier les changements"
+    // if(projectToDeleteArray.length){
+    //     deleteProject(projectToDeleteArray)
+    // }
 
     let element = document.getElementById('edition-modal-project')
     document.body.removeChild(element)
@@ -325,6 +306,63 @@ const loadModal = async function (url){
 
 }
 
+// modalStep : int 
+// step 1 "Galerie photo"
+// step 2 "Ajouter une photo"
+
+async function displayModalStep(modalStep){
+
+    switch(modalStep){
+
+        case 1 :
+            let container = modal.querySelector('#modal-photo-container')
+            container.style.display = "grid"
+            modal.querySelector('#modal-add-photo').style.display = "none"
+            modal.querySelector('.modal-form-submit').style.display = "none"
+            modal.querySelector('.modal-btn-container').style.justifyContent = "flex-end"
+            modal.querySelector('.modal-back-btn').style.display = "none"
+            modal.querySelector('.modal-title').innerHTML = "Galerie photo"
+            modal.querySelector('.modal-add-btn').style.display = "flex"
+            modal.querySelector('.modal-add-btn').innerHTML = "Ajouter une photo"
+            modal.querySelector('.modal-add-btn').addEventListener('click', (event => {
+                displayModalStep(2)
+            }));
+
+            if(!container.firstChild){
+                dispatchWorks(worksData, 'toModal')
+            }
+           
+            break;
+            
+        case 2 :
+        
+            modal.querySelector('#modal-add-photo').style.display = null
+            modal.querySelector('#modal-photo-container').style.display = "none"
+
+            modal.querySelector('.modal-form-submit').style.display = null
+            modal.querySelector('.modal-btn-container').style.justifyContent = "space-between"
+            modal.querySelector('.modal-back-btn').style.display = "block"
+            modal.querySelector('.modal-back-btn').addEventListener('click', (event => {
+                displayModalStep(1)
+            }));
+            modal.querySelector('.modal-title').innerHTML = "Ajout photo"
+            modal.querySelector('.modal-add-btn').style.display = "none"
+            modal.querySelector('.modal-delete-gallery-btn') ? modal.querySelector('.modal-delete-gallery-btn').style.display = "none" : ""
+            let select = document.getElementById('select-category')
+            if(!select.firstChild){
+                let categories = await getCategories(); 
+            
+                categories.forEach(data =>{
+                    let option = document.createElement('option')
+                    option.setAttribute('value', data.id)
+                    option.innerHTML = data.name
+                    select.append(option)
+                })
+            }
+            break;
+    }
+};
+
 let projectToDeleteArray = [];
 const preDeleteProject = function (projectToDelete){
     projectToDeleteArray.push(projectToDelete)
@@ -355,6 +393,10 @@ async function deleteProject(arrayOfProjectsId){
     }
 }
 
+let projectToAdd = {};
+const preAddProject = function (){
+  
+}
 
 document.querySelectorAll('.edition-modal').forEach(item =>{
     item.addEventListener('click', openModal);
@@ -372,5 +414,15 @@ window.addEventListener('keydown', function (e) {
 })
 
 
-checkLoggedIn();
+if(checkLoggedIn()){
+    document.getElementById('navbar').style.marginTop = "100px"
+    document.getElementById('logout-link-li').classList.remove("hide")
+    document.getElementById('login-link-li').classList.add("hide")
+    getWorks()
+}else{
+    editionModeDisabled()
+    getWorks()
+    getCategories()
+}
+
 
