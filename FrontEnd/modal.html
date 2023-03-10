@@ -22,10 +22,16 @@
             <div id="modal-add-photo">
                 <div class="modal-upload-field">
                     <i class="fa-regular fa-image"></i>
-                    <button class="modal-upload-field-btn">+ Ajouter photo</button>
+                    <label for="modal-upload-field" class="modal-upload-field-btn">
+                        <span class="modal-upload-label-txt">+ Ajouter photo</span>
+                    </label>
                     <p class="modal-upload-field-txt">jpg, png : 4mo max</p>
+                    <input id="modal-upload-field" type="file" name="modal-upload-field" accept="image/png, image/jpeg">
+                    <!-- <input class="modal-upload-field-btn" type="file" name="picture" accept="image/png, image/jpeg"> -->
+                    <!-- <button class="modal-upload-field-btn">+ Ajouter photo</button> -->
+                    
                 </div>
-                <form class="modal-form" action="#" method="post">
+                <form class="modal-form" action="#" method="post" enctype="multipart/form-data">
                     <label for="input-title">Titre</label>
                     <input class="modal-form-input-title" type="text" id="input-title" name="title">
                     <label for="select-category">Catégorie</label>

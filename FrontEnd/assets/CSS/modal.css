@@ -154,6 +154,10 @@
 }
 
 .modal-upload-field-btn{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     border: none;
     background-color: #CBD6DC;
     border-radius: 50px;
@@ -164,14 +168,17 @@
     width: 173px;
     height: 35px;
     cursor: pointer;
+    margin-top: 0;
 }
 
 .fa-image{
     color: #B9C5CC;
-    font-size: 63px;
+    font-size: 55px;
+    margin: 28px 0 20px 0;
 }
 
 .modal-upload-field-txt{
+    margin-top: 7px;
     font-size: 10px;
 }
 
@@ -209,4 +216,12 @@
 
 .modal-form-submit:disabled{
     background-color: #A7A7A7;
+}
+
+.modal-upload-label-txt{
+  font-size: 14px;
+}
+
+#modal-upload-field{
+    visibility: hidden;
 }
