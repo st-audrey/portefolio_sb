@@ -150,7 +150,6 @@
     height: 170px;
     width: 430px;
     border-radius: 3px;
-    margin-bottom: 30px;
 }
 
 .modal-upload-field-btn{
@@ -228,4 +227,8 @@
 
 .modal-upload > img {
     max-height: 170px;
+}
+
+.modale-error-img-container{
+    height: 30px;
 }

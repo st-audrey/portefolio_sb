@@ -1,4 +1,5 @@
 let worksData;
+var formData = new FormData();
 //TODO : addClass (au lieu du style)
 
 const chargeLoginSection = async function (e){
@@ -322,6 +323,8 @@ async function displayModalStep(modalStep){
             modal.querySelector('.modal-btn-container').style.justifyContent = "flex-end"
             modal.querySelector('.modal-back-btn').style.display = "none"
             modal.querySelector('.modal-title').innerHTML = "Galerie photo"
+            modal.querySelector('.modal-delete-gallery-btn').style.display == "none" ? modal.querySelector('.modal-delete-gallery-btn').style.display = "flex" : "" 
+
             modal.querySelector('.modal-add-btn').style.display = "flex"
             modal.querySelector('.modal-add-btn').innerHTML = "Ajouter une photo"
             modal.querySelector('.modal-add-btn').addEventListener('click', (event => {
@@ -352,7 +355,16 @@ async function displayModalStep(modalStep){
             let fileInput = document.getElementById('modal-upload-field')
             fileInput.addEventListener('change', verifySelectedPhoto)
 
+            let titleInput = modal.querySelector('.modal-form-input-title')
+            titleInput.addEventListener("keyup", (event)=>{
+                prepareData(null, null, titleInput.value)
+            });
+
             let select = document.getElementById('select-category')
+
+            select.addEventListener('change', (event) => {
+                prepareData(null, select.value)
+            });
 
             if(!select.firstChild){
 
@@ -369,10 +381,10 @@ async function displayModalStep(modalStep){
                 })
 
                 select.addEventListener('change', (event) => {
-                    //console.log("select", select.value)
                     prepareData(null, select.value)
                 });
             }
+
             break;
     }
 }
@@ -387,12 +399,11 @@ const verifySelectedPhoto = function (e){
     if (fileInput.files.length > 0) {
         const fileSize = fileInput.files.item(0).size //given in octets
         const fileMB = fileSize / 1024 ** 2
-        //console.log(fileSize + " octets =", fileMB + " MB")
 
-        if (fileMB > 4) {
-            // err "Please select a file less than 2MB.";
+        if (fileMB > 1) {
+            modal.querySelector('#modal-img-error').innerHTML = "Votre image doit peser moins de 4 Mo" 
         }else{
-            
+            modal.querySelector('#modal-img-error').innerHTML = ""
             const file = document.getElementById('modal-upload-field').files[0];
             prepareData(file)
             let container = document.querySelector('.modal-upload')
@@ -408,16 +419,20 @@ const verifySelectedPhoto = function (e){
     }
 }
 
-var formData = new FormData();
 const prepareData = function (imgFile, title, category){
 
-    imgFile ? formData.append("userfile", imgFile) :
+    imgFile ? formData.append("image", imgFile) :
     title ? formData.append("title", title) :
-    category ? formData.append("title", category) : ""
-    
-    for (const value of formData.values()) {
-        console.log("value",value);
-      }
+    category ? formData.append("category", category) : ""
+
+    let sumitButton = modal.querySelector('.modal-form-submit')
+
+    if(formData.get("title") == null || formData.get("category") == null || formData.get("image") == null){
+        sumitButton.setAttribute("disabled", "disabled")
+    }else{
+        sumitButton.removeAttribute("disabled")
+    }
+
 }
 
 // formElem.onsubmit = async (e) => {

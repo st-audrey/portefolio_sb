@@ -21,7 +21,7 @@
 
             <div id="modal-add-photo">
 
-                <form id="modal-form" class="modal-form" action="#" method="post" enctype="multipart/form-data" onsubmit="preAddPhoto(event)">
+                <form id="modal-form" class="modal-form" action="#" method="post" enctype="multipart/form-data" onsubmit="addNewWork(event)">
 
                     <div class="modal-upload">
                         <i class="fa-regular fa-image"></i>
@@ -30,8 +30,13 @@
                         </label>
                         <p class="modal-upload-field-txt">jpg, png : 4mo max</p>
                         <input id="modal-upload-field" type="file" name="modal-upload-field" accept="image/png, image/jpeg"> 
+                     
                     </div>
-           
+
+                    <div class="modale-error-img-container">
+                        <p id="modal-img-error"></p>
+                    </div>
+                    
                     <label for="input-title">Titre</label>
                     <input class="modal-form-input-title" type="text" id="input-title" name="title" required>
 
@@ -41,7 +46,7 @@
                 </form>
             </div>
 
-            <button type="submit" form="modal-form" class="modal-form-submit" disabled>Valider</button>
+            <button type="submit" form="modal-form" class="modal-form-submit">Valider</button>
 
             <button class="modal-add-btn">Ajouter une photo</button>
             <button class="modal-delete-gallery-btn">Supprimer la galerie</button>
