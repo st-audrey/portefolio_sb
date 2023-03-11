@@ -123,7 +123,8 @@ h1{
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: #B1663C;
+	cursor: pointer;
 }
 
 h1 > span {
@@ -151,19 +152,19 @@ nav li {
 	font-size: 1.2em;
 }
 
-#login-link, #project-link, #logout-link{
-	color: black;
+nav li a{
 	text-decoration: none;
+	color: black;
+}
+
+nav li a:hover{
+	color: #B1663C;
 }
 
 .insta-ico{
     width: 20px;
     height: 20px;
 	margin-top: 3px;
-}
-
-li:hover, #login-link:hover, #project-link:hover, #logout-link:hover {
-	color: #B1663C;
 }
 
 #introduction {
@@ -313,6 +314,13 @@ footer nav ul {
 	background-color: #1D6154;
 	color: white;
 }
+
+.home-link{
+	text-decoration: none;
+	color: #B1663C;
+}
+
+
 
 
 

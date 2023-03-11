@@ -1,6 +1,6 @@
 async function logUser(e){
   e.preventDefault();
-  console.log("toto")
+
   let error = document.getElementById("error");
   let user = {
       email : document.getElementById("email_login").value,

@@ -99,13 +99,13 @@ async function getCategories(){
     });
  }
 
-function dispatchProjects(data, workDestination, idCategory){
-    if(workDestination == "toGallery"){
+function dispatchProjects(data, projectsDestination, idCategory){
+    if(projectsDestination == "toGallery"){
         let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
         gallery.innerHTML = "";
     
         if(idCategory && idCategory != 4){
-            data = data.filter((work)=> work.categoryId == idCategory);
+            data = data.filter((item)=> item.categoryId == idCategory);
             
         }else if(!idCategory || idCategory == 4){
             data = data;
@@ -127,25 +127,25 @@ function dispatchProjects(data, workDestination, idCategory){
 
     } else {
        
-        let workContainer = document.getElementById("modal-photo-container");
+        let projectContainer = document.getElementById("modal-photo-container");
 
         for(let i = 0; i < data.length; i++){
 
-            let work = document.createElement('div')
-            let workImage = document.createElement('img')
-            let workEditionLink = document.createElement('a')
+            let project = document.createElement('div')
+            let projectImage = document.createElement('img')
+            let projectEditionLink = document.createElement('a')
             let iconContainer = document.createElement('div') 
             let deleteIcon = document.createElement('i')
         
-            work.classList.add('modal-work-container')
+            project.classList.add('modal-work-container')
 
-            workImage.setAttribute('src', data[i].imageUrl)
-            workImage.classList.add('modal-img-project')
-            workImage.setAttribute('id', "work_"+ data[i].id)
+            projectImage.setAttribute('src', data[i].imageUrl)
+            projectImage.classList.add('modal-img-project')
+            projectImage.setAttribute('id', "work_"+ data[i].id)
 
-            workEditionLink.setAttribute( 'href', '#')
-            workEditionLink.classList.add('modal-edition-link')
-            workEditionLink.innerHTML = "éditer"
+            projectEditionLink.setAttribute( 'href', '#')
+            projectEditionLink.classList.add('modal-edition-link')
+            projectEditionLink.innerHTML = "éditer"
 
             iconContainer.classList.add('modal-icon-container')
 
@@ -167,9 +167,9 @@ function dispatchProjects(data, workDestination, idCategory){
             } 
             
             iconContainer.append(deleteIcon)
-            work.append( iconContainer, workImage, workEditionLink)
+            project.append( iconContainer, projectImage, projectEditionLink)
     
-            workContainer.appendChild(work)
+            projectContainer.appendChild(project)
         }         
     }
 }
