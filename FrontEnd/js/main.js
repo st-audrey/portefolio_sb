@@ -45,9 +45,9 @@ const loadLoginSection = async function(url){
 }
 
 function logout(){
-    localStorage.clear();
-    document.getElementById('login-link-li').classList.remove("hide");
-    document.getElementById('logout-link-li').classList.add("hide");
+    localStorage.clear()
+    document.getElementById('login-link-li').classList.remove("hide")
+    document.getElementById('logout-link-li').classList.add("hide")
     window.location.href="index.html"
 }
 
@@ -73,7 +73,7 @@ async function getProjects(){
 
     }).then(function (data) {
         projectsData = data;
-        dispatchWorks(data, "toGallery");
+        dispatchProjects(data, "toGallery");
 
     }).catch(function (err) {
         console.warn('Something went wrong with works', err);
@@ -99,31 +99,30 @@ async function getCategories(){
     });
  }
 
-function dispatchWorks(data, workDestination, idCategory){
+function dispatchProjects(data, workDestination, idCategory){
     if(workDestination == "toGallery"){
         let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
         gallery.innerHTML = "";
-    
     
         if(idCategory && idCategory != 4){
             data = data.filter((work)=> work.categoryId == idCategory);
             
         }else if(!idCategory || idCategory == 4){
-            console.log(data,"test");
+            data = data;
         }
     
         data.forEach(item => {
     
-            let work = document.createElement('figure');
-            let workImage = document.createElement('img');
-            let workText = document.createElement('figcaption');
+            let project = document.createElement('figure');
+            let projectImage = document.createElement('img');
+            let projectText = document.createElement('figcaption');
         
-            workImage.setAttribute('src', item.imageUrl);
-            workText.innerHTML += item.title;
+            projectImage.setAttribute('src', item.imageUrl);
+            projectText.innerHTML += item.title;
     
-            work.append(workImage, workText);
+            project.append(projectImage, projectText);
     
-            gallery.appendChild(work);
+            gallery.appendChild(project);
         });
 
     } else {
@@ -176,19 +175,12 @@ function dispatchWorks(data, workDestination, idCategory){
 }
 
 const createFilters = function (data){
-//TODO : addClass (au lieu du style)
 
     let portfolio = document.getElementById('portfolio');
     let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
     let newContainer = document.createElement('div');  
-    newContainer.style.width = '65%';
-    newContainer.style.margin = '50px auto 50px';
-    newContainer.style.display = 'flex';
-    newContainer.style.flexDirection = 'row';
-    newContainer.style.justifyContent = 'space-around';
-    
-    newContainer.setAttribute('id', 'filters-container');
 
+    newContainer.setAttribute('id', 'filters-container');
     portfolio.insertBefore(newContainer, gallery);
 
     let filtersContainer = document.getElementById('filters-container');
@@ -203,27 +195,10 @@ const createFilters = function (data){
 
     allFilters.forEach(item => {
         let filter = document.createElement('button');
-        filter.style.border = '1px solid #1D6154';
-        filter.style.backgroundColor = '#FFFEF8';
-        filter.style.padding = '5px 17px 5px 17px';
-        filter.style.borderRadius = '40px';
-        filter.style.fontFamily = 'Syne';
-        filter.style.fontSize = '16px';
-        filter.style.color = '#1D6154';
-        filter.style.cursor = 'pointer';
+        filter.classList.add('filter-btn')
 
-        filter.addEventListener("mouseover", (event) => {
-            filter.style.color = 'white';
-            filter.style.backgroundColor = '#1D6154';
-        });
-        
-        filter.addEventListener("mouseout", (event) => {
-            filter.style.color = '#1D6154';
-            filter.style.backgroundColor = '#FFFEF8';
-        });
-
-        filter.addEventListener("click", (event) => {
-            dispatchWorks(projectsData, "toGallery", item.id);
+        filter.addEventListener("click", function(){
+            dispatchProjects(projectsData, "toGallery", item.id);
         });
         
         item.name == "Hotels & restaurants" ? item.name = "Hôtels & restaurants" : item
@@ -254,7 +229,6 @@ const openModal = async function (e) {
     modal.querySelector('.edition-modal-stop').addEventListener('click', stopPropagation)
 
     displayModalStep(1);
-
 }
 
 const closeModal = function (e){
@@ -278,7 +252,7 @@ const closeModal = function (e){
 
     projectsData.unshift(newProject)
 
-    dispatchWorks(projectsData, "toGallery")
+    dispatchProjects(projectsData, "toGallery")
 
     let element = document.getElementById('edition-modal-project')
     document.body.removeChild(element)
@@ -346,7 +320,7 @@ async function displayModalStep(modalStep){
             }));
 
             if(!container.firstChild){
-                dispatchWorks(projectsData, 'toModal')
+                dispatchProjects(projectsData, 'toModal')
             }
            
             break;
@@ -512,6 +486,7 @@ document.querySelectorAll('.edition-modal').forEach(item =>{
 
 document.getElementById('login-link').addEventListener('click', chargeLoginSection);
 
+//accessibility
 window.addEventListener('keydown', function (e) {
     if( e.key === "Escape" || e.key === "Esc"){
         closeModal(e);
@@ -526,16 +501,22 @@ document.querySelector('#edition-complete').addEventListener('click', function (
     publishModifications(projectToDeleteArray, formData)
 });
 
-
-if(checkLoggedIn()){
+const applyEditionStyle = function(){
     document.getElementById('navbar').style.marginTop = "100px"
     document.getElementById('logout-link-li').classList.remove("hide")
     document.getElementById('login-link-li').classList.add("hide")
+}
+
+if(checkLoggedIn()){
+    applyEditionStyle()
     getProjects()
+
 }else{
+
     editionModeDisabled()
     getProjects()
     getCategories()
+
 }
 
 

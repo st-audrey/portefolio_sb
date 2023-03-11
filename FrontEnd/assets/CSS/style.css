@@ -290,4 +290,29 @@ footer nav ul {
 	display: none;
 }
 
+#filters-container{
+	display : flex;
+	justify-content : space-around;
+	flex-direction : row;
+	width : 65%;
+	margin : 50px auto 50px;
+}   
+
+.filter-btn{
+	border: 1px solid #1D6154;
+	background-color: #FFFEF8;
+	padding: 5px 17px 5px 17px;
+	border-radius: 40px;
+	font-family: 'Syne';
+	font-size: 16px;
+	color: #1D6154;
+	cursor:pointer;
+}
+
+.filter-btn:hover{
+	background-color: #1D6154;
+	color: white;
+}
+
+
 
