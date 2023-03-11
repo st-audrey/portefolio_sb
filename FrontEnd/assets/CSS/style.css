@@ -220,6 +220,8 @@ li:hover, #login-link:hover, #project-link:hover, #logout-link:hover {
 
 .gallery img {
 	width: 100%;
+	object-fit: cover;
+    height: 95%;
 
 }
 #contact {

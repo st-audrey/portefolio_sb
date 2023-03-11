@@ -1,5 +1,19 @@
-let worksData;
+var projectsData;
 var formData = new FormData();
+var formValues = {
+    image: null,
+    title: null,
+    category: null
+}
+var projectToDeleteArray = [];
+let modal = null
+let focusables = []
+let previouslyFocusedElement = null
+
+//TODO : revoir les focusableSelector
+const focusableSelector = 'button, a, input'
+
+
 //TODO : addClass (au lieu du style)
 
 const chargeLoginSection = async function (e){
@@ -11,7 +25,6 @@ const chargeLoginSection = async function (e){
     } else {
         modal = await loadLoginSection(target);
     }
-
 }
 
 //refacto les load### function
@@ -54,12 +67,12 @@ function editionModeDisabled(){
     }
 }
 
-async function getWorks(){
+async function getProjects(){
     fetch('http://localhost:5678/api/works').then(function (response) {
         return response.json();
 
     }).then(function (data) {
-        worksData = data;
+        projectsData = data;
         dispatchWorks(data, "toGallery");
 
     }).catch(function (err) {
@@ -117,7 +130,6 @@ function dispatchWorks(data, workDestination, idCategory){
        
         let workContainer = document.getElementById("modal-photo-container");
 
-
         for(let i = 0; i < data.length; i++){
 
             let work = document.createElement('div')
@@ -165,7 +177,7 @@ function dispatchWorks(data, workDestination, idCategory){
 
 const createFilters = function (data){
 //TODO : addClass (au lieu du style)
-//console.log(data)
+
     let portfolio = document.getElementById('portfolio');
     let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
     let newContainer = document.createElement('div');  
@@ -211,7 +223,7 @@ const createFilters = function (data){
         });
 
         filter.addEventListener("click", (event) => {
-            dispatchWorks(worksData, "toGallery", item.id);
+            dispatchWorks(projectsData, "toGallery", item.id);
         });
         
         item.name == "Hotels & restaurants" ? item.name = "Hôtels & restaurants" : item
@@ -221,13 +233,6 @@ const createFilters = function (data){
     });   
 
 }
-
-let modal = null;
-//TODO : revoir les focusableSelector
-const focusableSelector = 'button, a, input'
-let focusables = []
-let previouslyFocusedElement = null
-
 
 const openModal = async function (e) {
     e.preventDefault()
@@ -241,7 +246,6 @@ const openModal = async function (e) {
     focusables = Array.from(modal.querySelectorAll(focusableSelector))
     previouslyFocusedElement = document.querySelector(':focus')
     focusables[0].focus()
-    //modal.style.display = null
     modal.removeAttribute('aria-hidden')
     modal.setAttribute('aria-modal', 'true')
 
@@ -254,20 +258,31 @@ const openModal = async function (e) {
 }
 
 const closeModal = function (e){
-    if ( modal === null ) return
     e.preventDefault()
+    if ( modal === null ) return
     if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
 
-    //TODO = suppression des projets au clic sur le bouton "publier les changements"
-    // if(projectToDeleteArray.length){
-    //     deleteProject(projectToDeleteArray)
-    // }
+    const isCompleted = Object.values(formValues).every(x => x !== null || x !== '')
+    if(isCompleted){
+        fillFormData()
+    }else{
+        //err: something when wrong
+    }
+
+    let imgURL = URL.createObjectURL(formValues.image)
+    newProject = {
+        categoryId: formValues.category,
+        imageUrl: imgURL,
+        title: formValues.title       
+    }
+
+    projectsData.unshift(newProject)
+
+    dispatchWorks(projectsData, "toGallery")
 
     let element = document.getElementById('edition-modal-project')
     document.body.removeChild(element)
     modal = null
-    dispatchWorks(worksData, "toGallery")
-
 }
 
 const stopPropagation = function (e) {
@@ -289,7 +304,6 @@ const focusInModal = function (e){
     if(index < 0){
         index = focusables.length -1;
     }
-
 
     focusables[index].focus();
 }
@@ -332,7 +346,7 @@ async function displayModalStep(modalStep){
             }));
 
             if(!container.firstChild){
-                dispatchWorks(worksData, 'toModal')
+                dispatchWorks(projectsData, 'toModal')
             }
            
             break;
@@ -352,19 +366,10 @@ async function displayModalStep(modalStep){
             modal.querySelector('.modal-add-btn').style.display = "none"
             modal.querySelector('.modal-delete-gallery-btn') ? modal.querySelector('.modal-delete-gallery-btn').style.display = "none" : ""
 
-            let fileInput = document.getElementById('modal-upload-field')
-            fileInput.addEventListener('change', verifySelectedPhoto)
-
-            let titleInput = modal.querySelector('.modal-form-input-title')
-            titleInput.addEventListener("keyup", (event)=>{
-                prepareData(null, null, titleInput.value)
-            });
+            modal.querySelector('#modal-upload-field') ? 
+            modal.querySelector('#modal-upload-field').addEventListener('change', verifySelectedPhoto) : ""
 
             let select = document.getElementById('select-category')
-
-            select.addEventListener('change', (event) => {
-                prepareData(null, select.value)
-            });
 
             if(!select.firstChild){
 
@@ -381,7 +386,8 @@ async function displayModalStep(modalStep){
                 })
 
                 select.addEventListener('change', (event) => {
-                    prepareData(null, select.value)
+                    formValues.category = select.value
+                    enableSubmit()
                 });
             }
 
@@ -389,8 +395,24 @@ async function displayModalStep(modalStep){
     }
 }
 
+const enableSubmit = function(e){
+//regex + nb caractères + !caratères spéciaux
+    let inputTitle = document.getElementById('input-title')
+
+    if(inputTitle.value || inputTitle.value != "" || inputTitle.value != null){
+        formValues.title = inputTitle.value
+    }
+
+    let sumitButton = modal.querySelector('.modal-form-submit')
+    if(!inputTitle.value || inputTitle.value === "" || inputTitle.value === null || formValues.category == null || formValues.image == null) { 
+        sumitButton.setAttribute("disabled", "disabled")
+    } else {
+        sumitButton.removeAttribute("disabled")
+    }
+}
+
 const verifySelectedPhoto = function (e){
-    e.preventDefault;
+    e.preventDefault()
 
     const fileInput = document.getElementById('modal-upload-field')
 
@@ -405,53 +427,61 @@ const verifySelectedPhoto = function (e){
         }else{
             modal.querySelector('#modal-img-error').innerHTML = ""
             const file = document.getElementById('modal-upload-field').files[0];
-            prepareData(file)
+            formValues.image = file
             let container = document.querySelector('.modal-upload')
             container.innerHTML = ""
 
             let image = document.createElement('img')
             image.src = URL.createObjectURL(file)
             container.append(image)
-
+            enableSubmit()
         }
+
     }else{
         //err : aucun fichier sélectionné
     }
 }
 
-const prepareData = function (imgFile, title, category){
+const fillFormData = function (){
+    console.log("from fillFormData -> image", formValues.image)
+    formData.append("image", formValues.image)
+    formData.append("title", formValues.title)
+    formData.append("category", parseInt(formValues.category))
 
-    imgFile ? formData.append("image", imgFile) :
-    title ? formData.append("title", title) :
-    category ? formData.append("category", category) : ""
-
-    let sumitButton = modal.querySelector('.modal-form-submit')
-
-    if(formData.get("title") == null || formData.get("category") == null || formData.get("image") == null){
-        sumitButton.setAttribute("disabled", "disabled")
-    }else{
-        sumitButton.removeAttribute("disabled")
+    for (const value of formData.values()) {
+        console.log("fillFormData", value);
     }
-
 }
 
-// formElem.onsubmit = async (e) => {
-//     e.preventDefault();
+const createNewProject = async function (projectToCreateformData){
 
-//     let response = await fetch('/article/formdata/post/user-avatar', {
-//       method: 'POST',
-//       body: new FormData(formElem)
-//     });
+    let token = localStorage.getItem('token');
 
-//     let result = await response.json();
+    let response = await fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            headers: new Headers({
+            'Authorization' : `Bearer ${token}`,
+            }),
+            body: projectToCreateformData
+    });
 
-//     alert(result.message);
-//   };
+    let result = await response.json();
+    let result2 = await response;
+    console.log("createNewProject", result, result2)
+}
 
-let projectToDeleteArray = [];
+const publishModifications = async function (projectToDeleteArray, projectToCreateformData) {
+
+    if(projectToDeleteArray.length){
+        deleteProject(projectToDeleteArray)
+    }
+   
+    createNewProject(projectToCreateformData)
+}
+
 const preDeleteProject = function (projectToDelete){
     projectToDeleteArray.push(projectToDelete)
-    worksData = worksData.filter(work => work.id != projectToDelete)
+    projectsData = projectsData.filter(project => project.id != projectToDelete)
     imgOfPTD = document.getElementById("work_"+projectToDelete)
     imgOfPTD.style.filter = "grayscale(1)"
 }
@@ -467,12 +497,11 @@ async function deleteProject(arrayOfProjectsId){
             headers: new Headers({
                 'Authorization' : `Bearer ${token}`,
                 'Content-Type': 'application/json'
-                
             })
     });
           
         let result = await response.json();
-        //console.log(result)
+        console.log("from deleteProject", result)
  
     }
 }
@@ -492,15 +521,20 @@ window.addEventListener('keydown', function (e) {
     }
 })
 
+document.querySelector('#edition-complete').addEventListener('click', function (e) {
+    e.preventDefault()
+    publishModifications(projectToDeleteArray, formData)
+});
+
 
 if(checkLoggedIn()){
     document.getElementById('navbar').style.marginTop = "100px"
     document.getElementById('logout-link-li').classList.remove("hide")
     document.getElementById('login-link-li').classList.add("hide")
-    getWorks()
+    getProjects()
 }else{
     editionModeDisabled()
-    getWorks()
+    getProjects()
     getCategories()
 }
 
