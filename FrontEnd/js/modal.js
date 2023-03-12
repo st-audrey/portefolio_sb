@@ -21,24 +21,16 @@ const openModal = async function (e) {
 }
 
 const activatePublishButton = function(){
-    if(projectToDeleteArray.length || formValues.title !== null || formValues.title !== ""){
-        document.querySelector('#edition-complete').addEventListener('click', function (e) {
-            e.preventDefault()
-            publishModifications(projectToDeleteArray, formData)
-        });
-    }
+    document.querySelector('#edition-complete').addEventListener('click', function (e) {
+        e.preventDefault()
+        publishModifications(projectToDeleteArray, formData)
+    });
 }
 
 const closeModal = function (e){
     e.preventDefault()
     if ( modal === null ) return
     if ( previouslyFocusedElement !== null ) previouslyFocusedElement.focus()
-
-    //  TODO = voir si il y a des projets à suppr (projectToDeleteArray)
-    //          et/ou
-    //          voir si il y a des projets à créer 
-    //           activatePublishButton() en conséquence
-    //           puis closeModal
 
     const isCompleted = Object.values(formValues).every(x => x != null && x != '')
     if(isCompleted){
@@ -58,7 +50,10 @@ const closeModal = function (e){
     }
 
     dispatchProjects(projectsData, "toGallery")
-    activatePublishButton()
+    
+    if(projectToDeleteArray.length || isCompleted) {
+        activatePublishButton()
+    }
     let element = document.getElementById('edition-modal-project')
     document.body.removeChild(element)
     modal = null
