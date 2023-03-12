@@ -24,6 +24,7 @@ const activatePublishButton = function(){
     document.querySelector('#edition-complete').addEventListener('click', function (e) {
         e.preventDefault()
         publishModifications(projectToDeleteArray, formData)
+        projectToDeleteArray = []
     });
 }
 

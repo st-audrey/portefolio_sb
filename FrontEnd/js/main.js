@@ -175,17 +175,19 @@ const fillFormData = function (){
 
 
 
-const publishModifications = async function (projectToDeleteArray, projectToCreateformData) {
+const publishModifications = async function (projectArrayToDelete, projectToCreateformData) {
 
-    if(projectToDeleteArray.length){
-        deleteProject(projectToDeleteArray)
+    if(projectArrayToDelete.length){
+        projectArrayToDelete.forEach(projectToDelete => deleteProject(projectToDelete.id));
     }
-   
-    createNewProject(projectToCreateformData)
+    const isCompleted = Object.values(formValues).every(x => x != null && x != '')
+    if(isCompleted) {
+        createNewProject(projectToCreateformData)
+    }
 }
 
 const preDeleteProject = function (projectToDeleteId){
-    projectToDeleteArray.push(projectToDeleteId)
+    projectToDeleteArray.push(projectsData.filter(project => project.id == projectToDeleteId)[0])
     projectsData = projectsData.filter(project => project.id != projectToDeleteId)
     imgOfPTD = document.getElementById("work_"+projectToDeleteId)
     imgOfPTD.style.filter = "grayscale(1)"

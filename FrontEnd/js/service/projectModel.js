@@ -32,22 +32,20 @@ const createNewProject = async function (projectToCreateformData){
     console.log("createNewProject", result, result2)
 }
 
-async function deleteProject(arrayOfProjectsId){
+async function deleteProject(projectId){
     //TODO : gérer les erreurs
     let token = localStorage.getItem('token');
+    console.log('projectId', projectId);
+    let response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
 
-    for(const project of arrayOfProjectsId){
-        let response = await fetch(`http://localhost:5678/api/works/${project}`, {
-
-            method: 'DELETE',
-            headers: new Headers({
-                'Authorization' : `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            })
+        method: 'DELETE',
+        headers: new Headers({
+            'Authorization' : `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        })
     });
-          
-        let result = await response.json();
-        console.log("from deleteProject", result)
- 
-    }
+        
+    let result = await response.json()
+    console.log("from deleteProject", result)
+
 }
