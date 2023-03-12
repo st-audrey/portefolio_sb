@@ -17,8 +17,11 @@ async function logUser(e){
             .then((response) => {
                 if (response.status == 404 || response.status == 401 || response.message) {
                     error.innerHTML = "Erreur dans l\'identifiant ou le mot de passe"
-                    throw new Error("Bad response from server")
-        }
+                    throw new Error("Client error response : Not found or unauthorized")
+                }else if (response.status > 499 && response.status < 600){
+                    error.innerHTML = "Erreur de Serveur : nous travaillons actuellement afin <br> de résoudre le problème de connexion."
+                    throw new Error("Servor error responses")
+                }
             return response.json()
         }).then((response) => {
     

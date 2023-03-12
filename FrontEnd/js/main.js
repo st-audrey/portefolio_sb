@@ -231,26 +231,41 @@ const openModal = async function (e) {
     displayModalStep(1);
 }
 
+const activatePublishButton = function(){
+    if(projectToDeleteArray.length || formValues.title !== null || formValues.title !== ""){
+        document.querySelector('#edition-complete').addEventListener('click', function (e) {
+            e.preventDefault()
+            publishModifications(projectToDeleteArray, formData)
+        });
+    }
+}
+
 const closeModal = function (e){
     e.preventDefault()
     if ( modal === null ) return
-    if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
+    if ( previouslyFocusedElement !== null ) previouslyFocusedElement.focus()
 
-    const isCompleted = Object.values(formValues).every(x => x !== null || x !== '')
-    if(isCompleted){
-        fillFormData()
-    }else{
-        //err: something when wrong
-    }
+    //  TODO = voir si il y a des projets à suppr (projectToDeleteArray)
+    //          et/ou
+    //          voir si il y a des projets à créer 
+    //           activatePublishButton() en conséquence
+    //           puis closeModal
 
-    let imgURL = URL.createObjectURL(formValues.image)
-    newProject = {
-        categoryId: formValues.category,
-        imageUrl: imgURL,
-        title: formValues.title       
-    }
-
-    projectsData.unshift(newProject)
+    // const isCompleted = Object.values(formValues).every(x => x === null || x === '')
+    // console.log(formValues, "form values")
+    // console.log(isCompleted, " not completed ?")
+    // if(isCompleted){
+    //     console.log("closeModal is complete")
+        // fillFormData()
+        // activatePublishButton()
+        // let imgURL = URL.createObjectURL(formValues.image)
+        // newProjectForDemo = {
+        //     categoryId: formValues.category,
+        //     imageUrl: imgURL,
+        //     title: formValues.title       
+        // }
+        // projectsData.unshift(newProjectForDemo)
+    // }
 
     dispatchProjects(projectsData, "toGallery")
 
@@ -262,6 +277,7 @@ const closeModal = function (e){
 const stopPropagation = function (e) {
     e.stopPropagation();
 }
+
 
 const focusInModal = function (e){
     e.preventDefault();
@@ -292,13 +308,11 @@ const loadModal = async function (url){
 
     document.body.append(element);
     return element;
-
 }
 
 // modalStep : int 
 // step 1 "Galerie photo"
 // step 2 "Ajouter une photo"
-
 async function displayModalStep(modalStep){
 
     switch(modalStep){
@@ -495,11 +509,6 @@ window.addEventListener('keydown', function (e) {
         focusInModal(e);
     }
 })
-
-document.querySelector('#edition-complete').addEventListener('click', function (e) {
-    e.preventDefault()
-    publishModifications(projectToDeleteArray, formData)
-});
 
 const applyEditionStyle = function(){
     document.getElementById('navbar').style.marginTop = "100px"
