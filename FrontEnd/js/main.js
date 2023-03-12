@@ -76,66 +76,16 @@ function dispatchProjects(projectArray, projectsDestination, idCategory){
             projectArray = projectArray;
         }
     
-        projectArray.forEach(item => {
-    
-            let project = document.createElement('figure');
-            let projectImage = document.createElement('img');
-            let projectText = document.createElement('figcaption');
-        
-            projectImage.setAttribute('src', item.imageUrl);
-            projectText.innerHTML += item.title;
-    
-            project.append(projectImage, projectText);
-    
-            gallery.appendChild(project);
+        projectArray.forEach(project => {
+            project.addToGallery(gallery);
         });
 
     } else {
        
-        let projectContainer = document.getElementById("modal-photo-container");
-
+        let modal = document.getElementById("modal-photo-container");
         for(let i = 0; i < projectArray.length; i++){
-
-            let project = document.createElement('div')
-            let projectImage = document.createElement('img')
-            let projectEditionLink = document.createElement('a')
-            let iconContainer = document.createElement('div') 
-            let deleteIcon = document.createElement('i')
-        
-            project.classList.add('modal-work-container')
-
-            projectImage.setAttribute('src', projectArray[i].imageUrl)
-            projectImage.classList.add('modal-img-project')
-            projectImage.setAttribute('id', "work_"+ projectArray[i].id)
-
-            projectEditionLink.setAttribute( 'href', '#')
-            projectEditionLink.classList.add('modal-edition-link')
-            projectEditionLink.innerHTML = "éditer"
-
-            iconContainer.classList.add('modal-icon-container')
-
-            deleteIcon.classList.add('fa-solid')
-            deleteIcon.classList.add('fa-trash-can')
-            deleteIcon.classList.add('modal-edition-icon')
-            deleteIcon.addEventListener('click', (event) => { 
-                preDeleteProject(projectArray[i].id)
-            })
-            
-            if(i == 0){
-                let moveIcon = document.createElement('i')
-    
-                moveIcon.classList.add('fa-solid')
-                moveIcon.classList.add('fa-arrows-up-down-left-right')
-                moveIcon.classList.add('modal-edition-icon')
-
-                iconContainer.append(moveIcon)
-            } 
-            
-            iconContainer.append(deleteIcon)
-            project.append( iconContainer, projectImage, projectEditionLink)
-    
-            projectContainer.appendChild(project)
-        }         
+            projectArray[i].addToModal(modal, i == 0);
+        }
     }
 }
 
