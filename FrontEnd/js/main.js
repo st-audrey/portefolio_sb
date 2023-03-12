@@ -184,10 +184,10 @@ const publishModifications = async function (projectToDeleteArray, projectToCrea
     createNewProject(projectToCreateformData)
 }
 
-const preDeleteProject = function (projectToDelete){
-    projectToDeleteArray.push(projectToDelete)
-    projectsData = projectsData.filter(project => project.id != projectToDelete)
-    imgOfPTD = document.getElementById("work_"+projectToDelete)
+const preDeleteProject = function (projectToDeleteId){
+    projectToDeleteArray.push(projectToDeleteId)
+    projectsData = projectsData.filter(project => project.id != projectToDeleteId)
+    imgOfPTD = document.getElementById("work_"+projectToDeleteId)
     imgOfPTD.style.filter = "grayscale(1)"
 }
 

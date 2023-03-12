@@ -40,24 +40,25 @@ const closeModal = function (e){
     //           activatePublishButton() en conséquence
     //           puis closeModal
 
-    // const isCompleted = Object.values(formValues).every(x => x === null || x === '')
-    // console.log(formValues, "form values")
-    // console.log(isCompleted, " not completed ?")
-    // if(isCompleted){
-    //     console.log("closeModal is complete")
-        // fillFormData()
-        // activatePublishButton()
-        // let imgURL = URL.createObjectURL(formValues.image)
-        // newProjectForDemo = {
-        //     categoryId: formValues.category,
-        //     imageUrl: imgURL,
-        //     title: formValues.title       
-        // }
-        // projectsData.unshift(newProjectForDemo)
-    // }
+    const isCompleted = Object.values(formValues).every(x => x != null && x != '')
+    if(isCompleted){
+        fillFormData()
+       
+        let imgURL = URL.createObjectURL(formValues.image)
+        newProjectForDemo = new Project({
+            categoryId: formValues.category,
+            imageUrl: imgURL,
+            title: formValues.title,
+            id: null,
+            category: categories[formValues.category],
+            userId: localStorage.getItem('userId')
+        });
+
+        projectsData.unshift(newProjectForDemo)
+    }
 
     dispatchProjects(projectsData, "toGallery")
-
+    activatePublishButton()
     let element = document.getElementById('edition-modal-project')
     document.body.removeChild(element)
     modal = null
