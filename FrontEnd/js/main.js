@@ -109,19 +109,8 @@ const createFilters = function (){
     //     allFilters.add(data[i]);
     // }
 
-    categories.forEach(item => {
-        let filter = document.createElement('button');
-        filter.classList.add('filter-btn')
-
-        filter.addEventListener("click", function(){
-            dispatchProjects(projectsData, "toGallery", item.id);
-        });
-        
-        //missing "^" in db
-        item.name == "Hotels & restaurants" ? item.name = "Hôtels & restaurants" : item
-
-        filter.innerHTML = item.name
-        filtersContainer.append(filter)
+    categories.forEach(category => {
+        category.addToFiltersContainer(filtersContainer);
     });   
 
 }

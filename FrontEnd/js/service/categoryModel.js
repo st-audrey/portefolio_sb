@@ -5,15 +5,13 @@ async function getCategories(){
 
     .then(function (data) {
         let loggin = checkLoggedIn()
-        if(loggin == true){
+        if(loggin){
             return data
         }else{
-            console.log(data)
             data.forEach(item => {
                 categorie = new Category(item)
                 categories.push(categorie) 
             });
-            console.log(categories)
             createFilters()
         }
 
