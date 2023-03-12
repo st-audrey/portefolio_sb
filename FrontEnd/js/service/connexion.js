@@ -35,6 +35,13 @@ async function logUser(e){
     });
 }
 
+function logout(){
+    localStorage.clear()
+    document.getElementById('login-link-li').classList.remove("hide")
+    document.getElementById('logout-link-li').classList.add("hide")
+    window.location.href="index.html"
+}
+
 
 
 
