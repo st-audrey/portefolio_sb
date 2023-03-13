@@ -31,7 +31,7 @@ async function logUser(e){
             window.location.href="index.html";
 
     }).catch((error) => {
-        console.warn('Something went wrong with login', err);
+        console.warn('Something went wrong with login', error);
     });
 }
 

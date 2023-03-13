@@ -7,7 +7,6 @@ async function getProjects(){
             project = new Project(item)
             projectsData.push(project) 
         });
-        console.log(projectsData)
         dispatchProjects(projectsData, "toGallery")
 
     }).catch(function (err) {
