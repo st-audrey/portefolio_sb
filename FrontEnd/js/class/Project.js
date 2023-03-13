@@ -43,7 +43,7 @@ class Project {
         deleteIcon.classList.add('fa-solid')
         deleteIcon.classList.add('fa-trash-can')
         deleteIcon.classList.add('modal-edition-icon')
-        deleteIcon.addEventListener('click', (event) => { 
+        deleteIcon.addEventListener('click', () => { 
             preDeleteProject(this.id)
         })
         

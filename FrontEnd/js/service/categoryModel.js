@@ -1,34 +1,32 @@
  async function getCategories(){
+    try {
+        const response = await fetch('http://localhost:5678/api/categories', { 
+                method: 'GET',
+                headers: {
+                'Content-Type': 'application/json'
+                }})
+                
+        if (response.status == 500) {
+            throw new Error("Servor error responses")
+        }
+        const json = await response.json()
 
-    await fetch('http://localhost:5678/api/categories', { 
-            method: 'GET',
-            headers: {
-            'Content-Type': 'application/json'
-            }})
-            
-        .then((response) => {
-            if (response.status == 500) {
-                throw new Error("Servor error responses")
-            }
-            return response.json()
-        }).then((response) => {
-            console.log("toto")
-            let loggin = checkLoggedIn()
+        let loggin = checkLoggedIn()
 
-            if(loggin){
-                return response
+        if(loggin){
+            return json
 
-            }else{
-                response.forEach(item => {
-                    categorie = new Category(item)
-                    categories.push(categorie) 
-                });
+        }else{
+            json.forEach(item => {
+                categorie = new Category(item)
+                categories.push(categorie) 
+            });
 
-                console.log(categories)
-                createFilters()
-            }
-
-    }).catch((error) => {
+            console.log(categories)
+            createFilters()
+        }
+    }
+    catch(error) {
         console.warn('Something went wrong with categories', err)
-    })
+    }
 }
