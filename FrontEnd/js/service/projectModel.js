@@ -26,15 +26,14 @@ const createNewProject = async function (projectToCreateformData){
             body: projectToCreateformData
     });
 
-    let result = await response.json();
-    let result2 = await response;
-    console.log("createNewProject", result, result2)
+    let result = await response.json()
+    return result
 }
 
 async function deleteProject(projectId){
     //TODO : gérer les erreurs
-    let token = localStorage.getItem('token');
-    console.log('projectId', projectId);
+    let token = localStorage.getItem('token')
+
     let response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
 
         method: 'DELETE',
@@ -45,6 +44,5 @@ async function deleteProject(projectId){
     });
         
     let result = await response.json()
-    console.log("from deleteProject", result)
-
+    return result
 }

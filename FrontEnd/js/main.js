@@ -60,8 +60,6 @@ function editionModeDisabled(){
 
 function dispatchProjects(projectArray, projectsDestination, idCategory){
 
-console.log("dipatch", projectArray, projectsDestination, idCategory)
-
     if(projectsDestination == "toGallery"){
         let portfolio = document.getElementById('portfolio')
         let gallery = portfolio.getElementsByClassName('gallery')[0]
@@ -69,7 +67,6 @@ console.log("dipatch", projectArray, projectsDestination, idCategory)
     
         if(idCategory && idCategory != 4){
             projectArray = projectArray.filter((project)=> project.category.id == idCategory)
-            console.log(projectArray)
             
         }else if(!idCategory || idCategory == 4){
             projectArray = projectArray;
@@ -162,14 +159,13 @@ const verifySelectedPhoto = function (e){
 }
 
 const fillFormData = function (){
-    console.log("from fillFormData -> image", formValues.image)
     formData.append("image", formValues.image)
     formData.append("title", formValues.title)
     formData.append("category", parseInt(formValues.category))
 
-    for (const value of formData.values()) {
-        console.log("fillFormData", value);
-    }
+    // for (const value of formData.values()) {
+    //     console.log("fillFormData", value);
+    // }
 }
 
 const publishModifications = async function (projectArrayToDelete, projectToCreateformData) {

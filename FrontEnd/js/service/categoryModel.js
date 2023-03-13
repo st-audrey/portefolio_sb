@@ -21,8 +21,7 @@
                 categorie = new Category(item)
                 categories.push(categorie) 
             });
-
-            console.log(categories)
+            
             createFilters()
         }
     }
