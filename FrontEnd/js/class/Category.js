@@ -5,11 +5,11 @@ class Category {
     }
 
     addToFiltersContainer(filtersContainer) {
-        let filter = document.createElement('button');
+        let filter = document.createElement('button')
         filter.classList.add('filter-btn')
 
-        filter.addEventListener("click", function(){
-            dispatchProjects(projectsData, "toGallery", this.id);
+        filter.addEventListener("click", () => {
+            dispatchProjects(projectsData, "toGallery", this.id)
         });
         
         //missing "^" in db

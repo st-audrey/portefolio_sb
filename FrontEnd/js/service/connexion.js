@@ -14,14 +14,14 @@ async function logUser(e){
             'Content-Type': 'application/json;charset=utf-8'
         },
             body: JSON.stringify(user)})
-            .then((response) => {
-                if (response.status == 404 || response.status == 401 || response.message) {
-                    error.innerHTML = "Erreur dans l\'identifiant ou le mot de passe"
-                    throw new Error("Client error response : Not found or unauthorized")
-                }else if (response.status > 499 && response.status < 600){
-                    error.innerHTML = "Erreur de Serveur : nous travaillons actuellement afin <br> de résoudre le problème de connexion."
-                    throw new Error("Servor error responses")
-                }
+        .then((response) => {
+            if (response.status == 404 || response.status == 401 || response.message) {
+                error.innerHTML = "Erreur dans l\'identifiant ou le mot de passe"
+                throw new Error("Client error response : Not found or unauthorized")
+            }else if (response.status > 499 && response.status < 600){
+                error.innerHTML = "Erreur de Serveur : nous travaillons actuellement afin <br> de résoudre le problème de connexion."
+                throw new Error("Servor error responses")
+            }
             return response.json()
         }).then((response) => {
     
@@ -31,7 +31,7 @@ async function logUser(e){
             window.location.href="index.html";
 
     }).catch((error) => {
-        // console.log(error)
+        console.warn('Something went wrong with login', err);
     });
 }
 

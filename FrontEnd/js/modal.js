@@ -82,10 +82,10 @@ async function displayModalStep(modalStep){
         case 1 :
             let container = modal.querySelector('#modal-photo-container')
             container.style.display = "grid"
-            modal.querySelector('#modal-add-photo').style.display = "none"
-            modal.querySelector('.modal-form-submit').style.display = "none"
+            modal.querySelector('#modal-add-photo').classList.add('d-none')
+            modal.querySelector('.modal-form-submit').classList.add('d-none')
             modal.querySelector('.modal-btn-container').style.justifyContent = "flex-end"
-            modal.querySelector('.modal-back-btn').style.display = "none"
+            modal.querySelector('.modal-back-btn').classList.add('d-none')
             modal.querySelector('.modal-title').innerHTML = "Galerie photo"
             modal.querySelector('.modal-delete-gallery-btn').style.display == "none" ? modal.querySelector('.modal-delete-gallery-btn').style.display = "flex" : "" 
 
@@ -104,7 +104,7 @@ async function displayModalStep(modalStep){
         case 2 :
         
             modal.querySelector('#modal-add-photo').style.display = null
-            modal.querySelector('#modal-photo-container').style.display = "none"
+            modal.querySelector('#modal-photo-container').classList.add('d-none')
 
             modal.querySelector('.modal-form-submit').style.display = null
             modal.querySelector('.modal-btn-container').style.justifyContent = "space-between"
@@ -113,8 +113,9 @@ async function displayModalStep(modalStep){
                 displayModalStep(1)
             }));
             modal.querySelector('.modal-title').innerHTML = "Ajout photo"
-            modal.querySelector('.modal-add-btn').style.display = "none"
-            modal.querySelector('.modal-delete-gallery-btn') ? modal.querySelector('.modal-delete-gallery-btn').style.display = "none" : ""
+            modal.querySelector('.modal-add-btn').classList.add('d-none')
+            modal.querySelector('.modal-delete-gallery-btn') ? 
+            modal.querySelector('.modal-delete-gallery-btn').classList.add('d-none') : ""
 
             modal.querySelector('#modal-upload-field') ? 
             modal.querySelector('#modal-upload-field').addEventListener('change', verifySelectedPhoto) : ""
@@ -149,6 +150,7 @@ const stopPropagation = function (e) {
     e.stopPropagation();
 }
 
+//accessibility
 const focusInModal = function (e){
     e.preventDefault();
     let index = focusables.findIndex(f => f === modal.querySelector(':focus'));

@@ -1,53 +1,49 @@
-let projectsData = [];
-let categories = [];
-let formData = new FormData();
+let projectsData = []
+let categories = []
+let formData = new FormData()
+// faire un tableau d'objects pour ajout multiple => recheck toutes les conditions isCompleted
 let formValues = {
     image: null,
     title: null,
     category: null
 }
-let projectToDeleteArray = [];
+let projectToDeleteArray = []
 let modal = null
+let loginSection = null
 let focusables = []
 let previouslyFocusedElement = null
 
 //TODO : revoir les focusableSelector
 const focusableSelector = 'button, a, input'
 
-
-//TODO : addClass (au lieu du style)
-
 const chargeLoginSection = async function (e){
     e.preventDefault();
-    const target = e.target.getAttribute('href');
+    const target = e.target.getAttribute('href')
     if (target.startsWith("#")){
-        modal = document.querySelector(target);
+        loginSection = document.querySelector(target)
     } else {
-        modal = await loadLoginSection(target);
+        loginSection = await loadLoginSection(target)
     }
 }
 
-//refacto les load### function
+//refacto load### functions
 const loadLoginSection = async function(url){
       //ajax loading
       const target = '#' + url.split('#')[1];
-      const html = await fetch(url).then(response => response.text());
-      const element = document.createRange().createContextualFragment(html).querySelector(target);
+      const html = await fetch(url).then(response => response.text())
+      const element = document.createRange().createContextualFragment(html).querySelector(target)
   
-      if(element === null) throw `L'élément ${target} n'a pas été trouvé dans la page ${url}`;
+      if(element === null) throw `L'élément ${target} n'a pas été trouvé dans la page ${url}`
 
-      document.body.style.height = "100vh";
-      document.getElementById("login-link").style.fontWeight = "900";
-      let main = document.getElementById("main");
-      main.innerHTML = "";
-      main.append(element);
-      return element;
+      document.body.style.height = "100vh"
+      document.getElementById("login-link").style.fontWeight = "900"
+      let main = document.getElementById("main")
+      main.innerHTML = ""
+      main.append(element)
+      return element
 }
 
-
-
 function checkLoggedIn(){
-
     let token = localStorage.getItem("token")
     let logged
     token ? logged = true : logged = false
@@ -55,62 +51,65 @@ function checkLoggedIn(){
 }
 
 function editionModeDisabled(){
-    let editionElems = document.getElementsByClassName("edition-mode");
+    let editionElems = document.getElementsByClassName("edition-mode")
 
     for(let i = 0; i < editionElems.length; i++){
-        editionElems[i].classList.add("disabled");
+        editionElems[i].classList.add("disabled")
     }
 }
 
-
-//séparer
 function dispatchProjects(projectArray, projectsDestination, idCategory){
+
+console.log("dipatch", projectArray, projectsDestination, idCategory)
+
     if(projectsDestination == "toGallery"){
-        let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
-        gallery.innerHTML = "";
+        let portfolio = document.getElementById('portfolio')
+        let gallery = portfolio.getElementsByClassName('gallery')[0]
+        gallery.innerHTML = ""
     
         if(idCategory && idCategory != 4){
-            projectArray = projectArray.filter((project)=> project.category.id == idCategory);
+            projectArray = projectArray.filter((project)=> project.category.id == idCategory)
+            console.log(projectArray)
             
         }else if(!idCategory || idCategory == 4){
             projectArray = projectArray;
         }
     
         projectArray.forEach(project => {
-            project.addToGallery(gallery);
+            project.addToGallery(gallery)
         });
 
     } else {
        
-        let modal = document.getElementById("modal-photo-container");
+        let modal = document.getElementById("modal-photo-container")
         for(let i = 0; i < projectArray.length; i++){
-            projectArray[i].addToModal(modal, i == 0);
+            projectArray[i].addToModal(modal, i == 0)
         }
     }
 }
 
 const createFilters = function (){
 
-    let portfolio = document.getElementById('portfolio');
-    let gallery = document.getElementById('portfolio').getElementsByClassName('gallery')[0];
-    let newContainer = document.createElement('div');  
+    let portfolio = document.getElementById('portfolio')
+    let gallery = portfolio.getElementsByClassName('gallery')[0]
 
-    newContainer.setAttribute('id', 'filters-container');
-    portfolio.insertBefore(newContainer, gallery);
+    let newContainer = document.createElement('div')
+    newContainer.setAttribute('id', 'filters-container')
+    portfolio.insertBefore(newContainer, gallery)
 
-    let filtersContainer = document.getElementById('filters-container');
+    let filtersContainer = document.getElementById('filters-container')
 
     // let allFilters = new Set();
 
-    let tousCategory = new Category({id:4,name:"Tous"});
-    categories.unshift(tousCategory);
+    let tousCategory = new Category({id:4,name:"Tous"})
+    categories.unshift(tousCategory)
 
     // for( i = 0 ; i < data.length ; i++ ){
     //     allFilters.add(data[i]);
     // }
 
     categories.forEach(category => {
-        category.addToFiltersContainer(filtersContainer);
+        category.addToFiltersContainer(filtersContainer)
     });   
 
 }
@@ -173,8 +172,6 @@ const fillFormData = function (){
     }
 }
 
-
-
 const publishModifications = async function (projectArrayToDelete, projectToCreateformData) {
 
     if(projectArrayToDelete.length){
@@ -192,8 +189,6 @@ const preDeleteProject = function (projectToDeleteId){
     imgOfPTD = document.getElementById("work_"+projectToDeleteId)
     imgOfPTD.style.filter = "grayscale(1)"
 }
-
-
 
 document.querySelectorAll('.edition-modal').forEach(item =>{
     item.addEventListener('click', openModal);

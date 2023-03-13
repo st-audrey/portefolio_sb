@@ -17,12 +17,11 @@ class Project {
         projectText.innerHTML += this.title;
 
         project.append(projectImage, projectText);
-
         gallery.appendChild(project);
     }
 
     addToModal(modal, displayMoveIcon) {
-        
+        //TODO : add class not style
         let project = document.createElement('div')
         let projectImage = document.createElement('img')
         let projectEditionLink = document.createElement('a')
