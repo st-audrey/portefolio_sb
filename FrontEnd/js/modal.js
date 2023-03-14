@@ -31,7 +31,8 @@ const openModal = async function (e) {
 }
 
 const activatePublishButton = function(){
-    document.querySelector('#edition-complete').addEventListener('click', function (e) {
+    let publishButton = document.querySelector('#edition-complete')
+    publishButton.addEventListener('click', function (e) {
         e.preventDefault()
         publishModifications(projectToDeleteArray, formData)
         projectToDeleteArray = []

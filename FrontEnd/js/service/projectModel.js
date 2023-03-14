@@ -24,35 +24,56 @@ async function getProjects(){
         })
 }
 
-const createNewProject = async function (projectToCreateformData){
+
+async function createNewProject(projectToCreateformData){
 
     let token = localStorage.getItem('token')
 
-    let response = await fetch('http://localhost:5678/api/works', {
-            method: 'POST',
-            headers: new Headers({
-            'Authorization' : `Bearer ${token}`,
-            }),
-            body: projectToCreateformData
-    });
+    await fetch('http://localhost:5678/api/works', {
 
-    let result = await response.json()
-    return result
+             method: 'POST',
+             headers: new Headers({'Authorization' : `Bearer ${token}`}),
+             body: projectToCreateformData
+        })
+
+        .then((response) => {
+            if (response.status == 400 || response.status == 401 || response.status == 500) {
+
+             popToast("error")
+
+            }else{
+                response.json()
+                popToast("success")
+                return response
+            }
+        })
+        
+        .catch(function (err) {
+            console.warn('Something went wrong with works', err)
+        })
 }
 
 async function deleteProject(projectId){
-    //TODO : gérer les erreurs
+
     let token = localStorage.getItem('token')
 
-    let response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
-
+    await fetch(`http://localhost:5678/api/works/${projectId}`, {
         method: 'DELETE',
         headers: new Headers({
             'Authorization' : `Bearer ${token}`,
-            'Content-Type': 'application/json'
+            'Accept': 'application/json'
         })
-    });
-        
-    let result = await response.json()
-    return result
+    })
+    .then((response) => {
+        if (response.status == 400 || response.status == 401 || response.status == 500) {
+            popToast("error")
+        }
+        // response.json()
+        popToast("success")
+        return response
+    })
+    
+    .catch(function (err) {
+        console.warn('Something went wrong with works', err)
+    })
 }

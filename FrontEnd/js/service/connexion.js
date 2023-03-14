@@ -9,12 +9,13 @@ async function logUser(e){
     }
 
     await fetch('http://localhost:5678/api/users/login', { 
+        
                 method: 'POST',
-                headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-                body: JSON.stringify(user)})
-        .then((response) => {
+                headers: {'Content-Type': 'application/json;charset=utf-8'},
+                body: JSON.stringify(user)
+
+        }).then((response) => {
+
             if (response.status == 404 || response.status == 401 || response.message) {
                 error.innerHTML = "Erreur dans l\'identifiant ou le mot de passe"
                 throw new Error("Client error response : Not found or unauthorized")
@@ -23,6 +24,7 @@ async function logUser(e){
                 throw new Error("Servor error responses")
             }
             return response.json()
+
         }).then((response) => {
     
             localStorage.setItem("token", response.token)

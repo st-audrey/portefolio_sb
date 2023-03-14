@@ -181,6 +181,7 @@ const publishModifications = async function (projectArrayToDelete, projectToCrea
     if(projectArrayToDelete.length){
         projectArrayToDelete.forEach(projectToDelete => deleteProject(projectToDelete.id));
     }
+
     const isCompleted = Object.values(formValues).every(x => x != null && x != '')
     if(isCompleted) {
         createNewProject(projectToCreateformData)
@@ -194,11 +195,26 @@ const preDeleteProject = function (projectToDeleteId){
     imgOfPTD.style.filter = "grayscale(1)"
 }
 
+//toastType = string
+// types : success / warning / error
+const popToast = function (toastType){
+
+    toastType == null ? toastType ="warning" : toastType = toastType
+
+    let toast = document.getElementById('edition-toast-'+ toastType)
+    toast.classList.remove('d-none')
+
+    setTimeout(() => {
+        toast.classList.add('d-none')
+      }, "3000")
+}
+
 document.querySelectorAll('.edition-modal').forEach(item =>{
     item.addEventListener('click', openModal);
 })
 
-document.getElementById('login-link').addEventListener('click', chargeLoginSection);
+document.getElementById('login-link').addEventListener('click', chargeLoginSection)
+
 
 //accessibility
 window.addEventListener('keydown', function (e) {

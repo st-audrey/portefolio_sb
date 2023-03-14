@@ -320,6 +320,58 @@ footer nav ul {
 	color: #B1663C;
 }
 
+#edition-toast-success, #edition-toast-error, #edition-toast-warning{
+	position: fixed;
+    flex-direction: column;
+    top: 7px;
+    right: 1rem;
+    width: 216px;
+    height: 38px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    font-family: 'Work Sans';
+    align-items: center;
+    justify-content: center;
+	animation: toastIt 3000ms cubic-bezier(0.785, 0.135, 0.15, 0.86) forwards;
+}
+
+.toast-txt{
+	margin: 10px 0 0 20px;
+}
+
+#edition-toast-success{
+	background-color: #1D6154; 
+}
+
+#edition-toast-warning{
+	background-color: #B1663C; 
+}
+
+#edition-toast-error{
+	background-color: #611d1d; 
+}
+
+.d-none{
+	display: none;
+}
+
+@keyframes toastIt {
+	0%,
+	100% {
+		transform: translateY(-150%);
+		opacity: 0;
+	}
+	10%,
+	90% {
+		transform: translateY(0%);
+		opacity: 1;
+	}
+}
 
 
 
