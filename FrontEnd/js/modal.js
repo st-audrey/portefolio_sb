@@ -7,6 +7,7 @@ const openModal = async function (e) {
         modal = await loadModal(target)
     }
     
+    //accessibility
     focusables = Array.from(modal.querySelectorAll(focusableSelector))
     previouslyFocusedElement = document.querySelector(':focus')
     focusables[0].focus()
@@ -18,6 +19,15 @@ const openModal = async function (e) {
     modal.querySelector('.edition-modal-stop').addEventListener('click', stopPropagation)
 
     displayModalStep(1);
+
+    const isCompleted = Object.values(formValues).every(x => x != null && x != '')
+    if(isCompleted){
+        formValues = {
+            image: null,
+            title: null,
+            category: null
+        }
+    }
 }
 
 const activatePublishButton = function(){
@@ -55,6 +65,7 @@ const closeModal = function (e){
     if(projectToDeleteArray.length || isCompleted) {
         activatePublishButton()
     }
+
     let element = document.getElementById('edition-modal-project')
     document.body.removeChild(element)
     modal = null
@@ -73,8 +84,8 @@ const loadModal = async function (url){
 }
 
 // modalStep : int 
-// step 1 "Galerie photo"
-// step 2 "Ajouter une photo"
+// case 1 "Galerie photo"
+// case 2 "Ajouter une photo"
 async function displayModalStep(modalStep){
 
     switch(modalStep){

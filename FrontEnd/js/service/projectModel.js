@@ -1,22 +1,32 @@
 async function getProjects(){
-    fetch('http://localhost:5678/api/works').then(function (response) {
-        return response.json();
 
-    }).then(function (data) {
-        data.forEach(item => {
-            project = new Project(item)
-            projectsData.push(project) 
-        });
-        dispatchProjects(projectsData, "toGallery")
+    await fetch('http://localhost:5678/api/works', {
+            method: 'GET',
+            headers: {'Accept': 'application/json'}
+        })
+    
+        .then(function (response) {
+            return response.json()
+        })
+        
+        .then(function (data) {
+            data.forEach(item => {
+                project = new Project(item)
+                projectsData.push(project) 
+            })
 
-    }).catch(function (err) {
-        console.warn('Something went wrong with works', err)
-    });
+            dispatchProjects(projectsData, "toGallery")
+
+        })
+        
+        .catch(function (err) {
+            console.warn('Something went wrong with works', err)
+        })
 }
 
 const createNewProject = async function (projectToCreateformData){
 
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem('token')
 
     let response = await fetch('http://localhost:5678/api/works', {
             method: 'POST',
