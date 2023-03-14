@@ -14,6 +14,7 @@ class Project {
         let projectText = document.createElement('figcaption');
     
         projectImage.setAttribute('src', this.imageUrl);
+        projectImage.setAttribute('alt', "En savoir plus sur " + this.title)
         projectText.innerHTML += this.title;
 
         project.append(projectImage, projectText);
@@ -31,6 +32,7 @@ class Project {
         project.classList.add('modal-work-container')
 
         projectImage.setAttribute('src', this.imageUrl)
+        projectImage.setAttribute('alt', this.title)
         projectImage.classList.add('modal-img-project')
         projectImage.setAttribute('id', "work_"+ this.id)
 
