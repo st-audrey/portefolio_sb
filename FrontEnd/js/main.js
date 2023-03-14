@@ -114,15 +114,23 @@ const createFilters = function (){
 const enableSubmit = function(e){
 //regex + nb caractères + !caratères spéciaux
     let inputTitle = document.getElementById('input-title')
+    let maxLength = 45
+    let maxCharsContainer = document.getElementById('max-chars')
+    let sumitButton = modal.querySelector('.modal-form-submit')
+    
+    maxCharsContainer.innerHTML = "( " + inputTitle.value.length + " / "  + maxLength + " )"
+    inputTitle.value.length <= maxLength ? maxCharsContainer.style.color = "green" : maxCharsContainer.style.color = "red"
 
-    if(inputTitle.value || inputTitle.value != "" || inputTitle.value != null){
+    if(inputTitle.value.length < maxLength || inputTitle.value || inputTitle.value != "" || inputTitle.value != null){
         formValues.title = inputTitle.value
     }
 
-    let sumitButton = modal.querySelector('.modal-form-submit')
-    if(!inputTitle.value || inputTitle.value === "" || inputTitle.value === null || formValues.category == null || formValues.image == null) { 
+    if(inputTitle.value.length > maxLength || !inputTitle.value || inputTitle.value === "" || inputTitle.value === null || formValues.category == null || formValues.image == null) { 
+
         sumitButton.setAttribute("disabled", "disabled")
+
     } else {
+
         sumitButton.removeAttribute("disabled")
     }
 }
