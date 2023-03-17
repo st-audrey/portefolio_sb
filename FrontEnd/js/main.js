@@ -13,22 +13,17 @@ let loginSection = null
 let focusables = []
 let previouslyFocusedElement = null
 
-//TODO : revoir les focusableSelector
 const focusableSelector = 'button, a, input'
 
-const chargeLoginSection = async function (e){
+const chargeLoginSection = function (e){
     e.preventDefault();
     const target = e.target.getAttribute('href')
-    if (target.startsWith("#")){
-        loginSection = document.querySelector(target)
-    } else {
-        loginSection = await loadLoginSection(target)
-    }
-}
 
-//refacto load### functions
+        loadLoginSection(target)
+    }
+
+
 const loadLoginSection = async function(url){
-      //ajax loading
       const target = '#' + url.split('#')[1];
       const html = await fetch(url).then(response => response.text())
       const element = document.createRange().createContextualFragment(html).querySelector(target)
@@ -65,10 +60,10 @@ function dispatchProjects(projectArray, projectsDestination, idCategory){
         let gallery = portfolio.getElementsByClassName('gallery')[0]
         gallery.innerHTML = ""
     
-        if(idCategory && idCategory != 4){
+        if(idCategory && idCategory != 0){
             projectArray = projectArray.filter((project)=> project.category.id == idCategory)
             
-        }else if(!idCategory || idCategory == 4){
+        }else if(!idCategory || idCategory == 0){
             projectArray = projectArray;
         }
     
@@ -98,7 +93,7 @@ const createFilters = function (){
 
     // let allFilters = new Set();
 
-    let tousCategory = new Category({id:4,name:"Tous"})
+    let tousCategory = new Category({id:0,name:"Tous"})
     categories.unshift(tousCategory)
 
     // for( i = 0 ; i < data.length ; i++ ){
@@ -112,7 +107,6 @@ const createFilters = function (){
 }
 
 const enableSubmit = function(e){
-//regex + nb caractères + !caratères spéciaux
     let inputTitle = document.getElementById('input-title')
     let maxLength = 45
     let maxCharsContainer = document.getElementById('max-chars')
@@ -171,6 +165,7 @@ const fillFormData = function (){
     formData.append("title", formValues.title)
     formData.append("category", parseInt(formValues.category))
 
+    // to check formData values
     // for (const value of formData.values()) {
     //     console.log("fillFormData", value);
     // }
@@ -195,7 +190,7 @@ const preDeleteProject = function (projectToDeleteId){
     imgOfPTD.style.filter = "grayscale(1)"
 }
 
-//toastType = string
+// toastType = string
 // types : success / warning / error
 const popToast = function (toastType){
 
